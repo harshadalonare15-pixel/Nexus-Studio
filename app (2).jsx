@@ -1,0 +1,6468 @@
+// NEXUS STUDIO — Classy Dimensional Portal Edition
+// Author: Harshada Dinesh Lonare (SVPCET, Nagpur)
+const { useState, useEffect, useRef } = React;
+
+// --- SOURCE: src\config\siteConfig.js ---
+// Central Configuration for NEXUS STUDIO & Mini-Projects
+
+const SITE_CONFIG = {
+  platformName: "NEXUS STUDIO",
+  subtitle: "Interactive Web Engineering Lab",
+  tagline: "Six Experiences. One Engineering Vision.",
+  version: "2.4.0",
+  academicYear: "2026",
+  evaluatorNote: "Approved for Faculty Evaluation & Practical Examination",
+  
+  // Harshada Dinesh Lonare's Verified Profile Details
+  student: {
+    fullName: "Harshada Dinesh Lonare",
+    preferredName: "Harshada",
+    rollNo: "24010016",
+    degree: "B.Tech in Information Technology",
+    college: "St. Vincent Pallotti College of Engineering & Technology, Nagpur",
+    collegeShort: "SVPCET",
+    academicStatus: "Currently Enrolled (3rd Year — Vth Semester)",
+    semester: "5th Semester",
+    batch: "2024 - 2028",
+    primaryEmail: "harshadalonare.24@stvincentngp.edu.in",
+    personalEmail: "harshadalonare15@gmail.com",
+    contactNumber: "+91 92269 25656",
+    location: "Nagpur, Maharashtra, India",
+    githubUrl: "https://github.com/harshadalonare15-pixel",
+    linkedinUrl: "https://linkedin.com/in/harshada",
+    avatarUrl: "assets/harshada.png",
+    careerObjective: "Ambitious and detail-oriented Information Technology undergraduate with a strong foundation in modern frontend architecture, interactive user experiences, relational database design, and 3D web technologies. Eager to contribute to high-impact software engineering teams through disciplined coding, creative problem solving, and modern web standards."
+  },
+
+  // 6 Projects Metadata
+  projects: [
+    {
+      id: "restaurant",
+      number: "01",
+      name: "Dragon Pearl & Cafe",
+      shortName: "Dragon Pearl",
+      badge: "Practical 01",
+      tagline: "Culturally Inspired Culinary & Artisan Cafe Experience",
+      description: "Responsive showcase demonstrating CSS Flexbox, Grid layouts, dynamic menu filtering, interactive order cart, and instant table reservations.",
+      coverImage: "assets/cover_restaurant.png",
+      thumbnail: "assets/cover_restaurant.png",
+      accentColor: "#ef4444",
+      gradient: "from-rose-500/20 via-orange-500/10 to-amber-500/20",
+      technologies: ["React", "CSS Grid", "Flexbox", "Cart State", "Modal UI"],
+      concepts: ["Fluid Grid System", "Stateful Cart Calculation", "Form Validation", "Local DB Persistence"]
+    },
+    {
+      id: "chronolux",
+      number: "02",
+      name: "ChronoLux / ChronoVault",
+      shortName: "ChronoLux",
+      category: "E-Commerce",
+      badge: "Practical 02",
+      tagline: "High-Horology Luxury Timepiece Catalog & Boutique",
+      description: "Haute horlogerie e-commerce catalog featuring Rolex, Omega, Patek Philippe, and Cartier. Includes interactive wishlist, cart drawers, and checkout.",
+      coverImage: "assets/cover_watches.png",
+      thumbnail: "assets/cover_watches.png",
+      accentColor: "#d4af37",
+      gradient: "from-amber-600/20 via-yellow-700/10 to-stone-900/40",
+      technologies: ["React", "CSS Modules", "E-Commerce Cart", "Wishlist Store", "Order Engine"],
+      concepts: ["Catalog Filtering", "Multi-Tier Pricing", "Subtotal Calculation", "PostgreSQL Order Recording"]
+    },
+    {
+      id: "portfolio",
+      number: "03",
+      name: "Harshada's Portfolio",
+      shortName: "Harshada Lonare",
+      category: "Personal Portfolio",
+      badge: "Practical 03",
+      tagline: "Official Academic & Professional Engineering Portfolio",
+      description: "Curated personal portfolio of Harshada Dinesh Lonare featuring verified academic history, skill matrices, project portfolio, and downloadable CV.",
+      coverImage: "assets/cover_portfolio.png",
+      thumbnail: "assets/cover_portfolio.png",
+      accentColor: "#8b5cf6",
+      gradient: "from-purple-600/20 via-indigo-600/10 to-slate-900/40",
+      technologies: ["CSS Custom Properties", "Pseudo Elements", "Semantic HTML", "Interactive Modals"],
+      concepts: ["CSS Variables", "Accessible Navigation", "Resume Generator", "Database Inquiries"]
+    },
+    {
+      id: "auth",
+      number: "04",
+      name: "SecureFlow Identity",
+      shortName: "SecureFlow",
+      category: "Full Stack & Auth",
+      badge: "Practical 04",
+      tagline: "Animated Authentication & Credential Management",
+      description: "Cyber-security identity suite with smooth keyframe transitions, password strength diagnostics, visibility toggles, and live PostgreSQL user inserts.",
+      coverImage: "assets/cover_secureflow.png",
+      thumbnail: "assets/cover_secureflow.png",
+      accentColor: "#06b6d4",
+      gradient: "from-cyan-500/20 via-blue-600/10 to-indigo-900/40",
+      technologies: ["CSS Keyframe Animations", "Web Crypto API", "SHA-256 Hashing", "SQL Users Table"],
+      concepts: ["State Machine Transitions", "Client-Side Cryptography", "Session Persistence", "Rate Limiting"]
+    },
+    {
+      id: "news",
+      number: "05",
+      name: "The Daily Brief",
+      shortName: "Daily Brief",
+      category: "Editorial & Media",
+      badge: "Practical 05",
+      tagline: "Modern Editorial News & Multi-Column Digital Journal",
+      description: "Editorial publishing platform with live breaking news ticker, multi-category layout, bookmarking system, search filtering, and reader modal.",
+      coverImage: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80",
+      thumbnail: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80",
+      accentColor: "#10b981",
+      gradient: "from-emerald-600/20 via-teal-600/10 to-slate-900/40",
+      technologies: ["CSS Stacking Contexts", "Z-Index Hierarchy", "Category Filtering", "Bookmark State"],
+      concepts: ["Responsive Editorial Grid", "Live Ticker Animation", "Reading State", "Article Bookmarking"]
+    },
+    {
+      id: "student-hub",
+      number: "06",
+      name: "St. Vincent Pallotti Student Hub",
+      shortName: "Student Hub",
+      category: "React & Components",
+      badge: "Practical 06",
+      tagline: "Institutional Student Profile Directory & Records Hub",
+      description: "College directory featuring Harshada's verified profile, multi-department student directory, search & department filtering, and detailed student dossiers.",
+      coverImage: "assets/cover_studenthub.png",
+      thumbnail: "assets/cover_studenthub.png",
+      accentColor: "#eab308",
+      gradient: "from-emerald-800/30 via-yellow-600/10 to-teal-950/50",
+      technologies: ["React 18", "Reusable Components", "Props Hierarchy", "Search/Filter State"],
+      concepts: ["Component Composition", "Prop Drilling Elimination", "Dynamic Directory", "Institutional Theme"]
+    }
+  ]
+};
+
+
+// --- SOURCE: src\database\seedData.js ---
+// Initial Seed Data for NEXUS STUDIO PostgreSQL Engine
+
+const INITIAL_DATA = {
+  users: [
+    {
+      id: 1,
+      full_name: "Harshada Dinesh Lonare",
+      email: "harshadalonare.24@stvincentngp.edu.in",
+      password_hash: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", // admin@123
+      role: "Lead Engineer & Student",
+      status: "active",
+      created_at: "2026-08-15 10:00:00"
+    },
+    {
+      id: 2,
+      full_name: "Prof. Dr. R. K. Mahajan",
+      email: "faculty.evaluator@stvincentngp.edu.in",
+      password_hash: "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", // faculty@123
+      role: "Faculty Evaluator",
+      status: "active",
+      created_at: "2026-08-18 09:30:00"
+    },
+    {
+      id: 3,
+      full_name: "Demo Evaluator",
+      email: "evaluator@nexusstudio.io",
+      password_hash: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", // 1234
+      role: "Guest Reviewer",
+      status: "active",
+      created_at: "2026-10-20 14:15:00"
+    }
+  ],
+
+  restaurant_menu_items: [
+    {
+      id: 1,
+      name: "Chocolate Pastry",
+      category: "Cafe Specials",
+      price: 149.00,
+      description: "Rich chocolate pastry layered with Belgian chocolate ganache and creamy frosting.",
+      image_url: "/assets/dish_pastry.png",
+      is_chef_special: true,
+      is_available: true,
+      rating: 4.9
+    },
+    {
+      id: 2,
+      name: "Hot Coffee",
+      category: "Cafe Specials",
+      price: 129.00,
+      description: "Freshly brewed artisan Arabica roast served with silky micro-foam latte art.",
+      image_url: "/assets/dish_coffee.png",
+      is_chef_special: false,
+      is_available: true,
+      rating: 4.8
+    },
+    {
+      id: 3,
+      name: "Fresh Mocktail",
+      category: "Cafe Specials",
+      price: 179.00,
+      description: "Refreshing citrus mint cooler garnished with garden fresh limes and crushed ice.",
+      image_url: "/assets/dish_mocktail.png",
+      is_chef_special: false,
+      is_available: true,
+      rating: 4.7
+    },
+    {
+      id: 4,
+      name: "Cheese Maggi",
+      category: "Cafe Specials",
+      price: 169.00,
+      description: "Classic spiced Maggi noodles wok-tossed with sweet peppers, corn, and melted mozzarella.",
+      image_url: "/assets/dish_maggi.png",
+      is_chef_special: true,
+      is_available: true,
+      rating: 4.9
+    },
+    {
+      id: 5,
+      name: "Dragon Pearl Crystal Dim Sum",
+      category: "Dim Sum & Starters",
+      price: 299.00,
+      description: "Handcrafted translucent dumplings filled with water chestnuts, shiitake, and wild herbs.",
+      image_url: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80",
+      is_chef_special: true,
+      is_available: true,
+      rating: 5.0
+    },
+    {
+      id: 6,
+      name: "Sichuan Kung Pao Chicken / Tofu",
+      category: "Signature Mains",
+      price: 349.00,
+      description: "Wok-charred peppers, peanuts, and Sichuan peppercorns tossed in spicy sweet vinegar sauce.",
+      image_url: "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=600&q=80",
+      is_chef_special: false,
+      is_available: true,
+      rating: 4.8
+    },
+    {
+      id: 7,
+      name: "Golden Crispy Spring Rolls",
+      category: "Dim Sum & Starters",
+      price: 199.00,
+      description: "Crisp golden rolls filled with shredded glass noodles, cabbage, and sweet plum dip.",
+      image_url: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80",
+      is_chef_special: false,
+      is_available: true,
+      rating: 4.7
+    },
+    {
+      id: 8,
+      name: "Boba Tea",
+      category: "Beverages & Desserts",
+      price: 199.00,
+      description: "Creamy, refreshing milk tea served chilled with chewy tapioca pearls.",
+      image_url: "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80",
+      is_chef_special: false,
+      is_available: true,
+      rating: 4.8
+    },
+  ],
+
+  restaurant_orders: [
+    {
+      id: 1,
+      order_code: "DP-2026-9041",
+      customer_name: "Harshada Lonare",
+      customer_phone: "+91 92269 25656",
+      customer_address: "SVPCET Campus, Wardha Road, Nagpur",
+      items: [
+        { id: 1, name: "Chocolate Pastry", price: 149, quantity: 2 },
+        { id: 2, name: "Hot Coffee", price: 129, quantity: 1 }
+      ],
+      subtotal: 427.00,
+      gst: 21.35,
+      delivery_fee: 40.00,
+      total: 488.35,
+      payment_method: "UPI / Demo Pay",
+      status: "Delivered",
+      created_at: "2026-10-27 16:40:00"
+    }
+  ],
+
+  reservations: [
+    {
+      id: 1,
+      booking_code: "DP-RES-2026-108",
+      guest_name: "Harshada Lonare",
+      email: "harshadalonare.24@stvincentngp.edu.in",
+      phone: "+91 92269 25656",
+      party_size: 4,
+      reservation_date: "2026-11-02",
+      reservation_time: "19:30",
+      table_number: 7,
+      special_requests: "Window booth overlooking the fountain terrace",
+      status: "Confirmed",
+      created_at: "2026-10-26 12:15:00"
+    }
+  ],
+
+  products: [
+    {
+      id: 1,
+      brand: "Rolex",
+      name: "Rolex Submariner",
+      collection: "1968 Vintage Edition",
+      price: 799999.00,
+      stock_quantity: 3,
+      case_size: "40 mm Oystersteel",
+      movement_type: "Calibre 3235 Perpetual Self-Winding",
+      water_resistance: "300m / 1000ft",
+      description: "The reference benchmark among divers' timepieces. Features a unidirectional Cerachrom ceramic bezel and blue luminescent Chromalight display.",
+      image_url: "assets/watch_rolex.png",
+      featured: true
+    },
+    {
+      id: 2,
+      brand: "Omega",
+      name: "Omega Speedmaster",
+      collection: "Moonwatch Collection",
+      price: 549999.00,
+      stock_quantity: 4,
+      case_size: "42 mm Stainless Steel",
+      movement_type: "Co-Axial Master Chronometer Calibre 3861",
+      water_resistance: "50m / 165ft",
+      description: "One of the world's most iconic chronographs. Having been part of all six moon landings, this historic timepiece represents space exploration heritage.",
+      image_url: "/assets/watch_omega.png",
+      featured: true
+    },
+    {
+      id: 3,
+      brand: "Patek Philippe",
+      name: "Patek Philippe Calatrava",
+      collection: "Luxury Heritage",
+      price: 1899999.00,
+      stock_quantity: 2,
+      case_size: "39 mm 18K White Gold",
+      movement_type: "Mechanical Manual Wind Calibre 215 PS",
+      water_resistance: "30m",
+      description: "The supreme manifestation of timeless elegance. Pure round lines, hobnail patterned bezel, and exquisite Swiss Geneva Seal finishing.",
+      image_url: "/assets/watch_patek.png",
+      featured: true
+    },
+    {
+      id: 4,
+      brand: "Cartier",
+      name: "Cartier Tank Louis",
+      collection: "Classic Collection",
+      price: 699999.00,
+      stock_quantity: 5,
+      case_size: "33.7 mm x 25.5 mm",
+      movement_type: "Mechanical Movement Calibre 1917 MC",
+      water_resistance: "30m",
+      description: "The watch worn by Louis Cartier himself. Distinctive rectangular brancards, beaded crown set with a sapphire cabochon, and Roman numerals.",
+      image_url: "/assets/watch_cartier.png",
+      featured: true
+    },
+    {
+      id: 5,
+      brand: "Audemars Piguet",
+      name: "Audemars Piguet Royal Oak",
+      collection: "Jumbo Extra-Thin",
+      price: 2450000.00,
+      stock_quantity: 1,
+      case_size: "39 mm Steel & Titanium",
+      movement_type: "Self-Winding Calibre 7121",
+      water_resistance: "50m",
+      description: "Legendary Gerald Genta design featuring an octagonal bezel with 8 hexagonal screws and the Petite Tapisserie blue dial.",
+      image_url: "assets/watch_royal.png",
+      featured: true
+    },
+    {
+      id: 6,
+      brand: "TAG Heuer",
+      name: "TAG Heuer Carrera Chrono",
+      collection: "Racing Heritage",
+      price: 385000.00,
+      stock_quantity: 6,
+      case_size: "42 mm Polished Steel",
+      movement_type: "Calibre Heuer 02 Automatic",
+      water_resistance: "100m",
+      description: "Born on the racetrack in 1963. A motor-racing chronograph with 80-hour power reserve and column-wheel mechanism.",
+      image_url: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80",
+      featured: false
+    }
+  ],
+
+  orders: [
+    {
+      id: 1,
+      order_number: "CV-2026-78401",
+      customer_name: "Harshada Lonare",
+      email: "harshadalonare15@gmail.com",
+      shipping_address: "St. Vincent Pallotti College of Engg, Wardha Road",
+      city: "Nagpur",
+      state: "Maharashtra",
+      postal_code: "441108",
+      total_amount: 549999.00,
+      status: "VIP Delivery Dispatched",
+      items: [
+        { id: 2, name: "Omega Speedmaster", price: 549999, quantity: 1 }
+      ],
+      created_at: "2026-10-25 15:30:00"
+    }
+  ],
+
+  wishlists: [
+    { id: 1, user_email: "harshadalonare.24@stvincentngp.edu.in", product_id: 1, created_at: "2026-10-25 10:00:00" },
+    { id: 2, user_email: "harshadalonare.24@stvincentngp.edu.in", product_id: 3, created_at: "2026-10-25 10:05:00" }
+  ],
+
+  students: [
+    {
+      id: 1,
+      university_id: "24010016",
+      full_name: "Harshada Dinesh Lonare",
+      department: "Information Technology",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "harshadalonare.24@stvincentngp.edu.in",
+      contact: "9226925656",
+      gpa: 9.35,
+      academic_interest: "An Information Technology student interested in web development, modern software tools, and creating useful digital experiences.",
+      avatar_url: "harshada.png",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 2,
+      university_id: "24010042",
+      full_name: "Rohan S. Verma",
+      department: "Computer Science & Engineering",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "rohan.verma.24@stvincentngp.edu.in",
+      contact: "9823011452",
+      gpa: 9.12,
+      academic_interest: "Cloud Native architectures, Distributed Databases, and High-Performance Microservices in Go & Rust.",
+      avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 3,
+      university_id: "24010078",
+      full_name: "Priya N. Kulkarni",
+      department: "Artificial Intelligence & Data Science",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "priya.kulkarni.24@stvincentngp.edu.in",
+      contact: "9890244199",
+      gpa: 9.48,
+      academic_interest: "Computer Vision algorithms, Medical Imaging analysis, and Deep Learning for healthcare diagnostics.",
+      avatar_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 4,
+      university_id: "23010015",
+      full_name: "Amit R. Sharma",
+      department: "Information Technology",
+      academic_year: "4th Year",
+      semester: "VIIth Semester",
+      email: "amit.sharma.23@stvincentngp.edu.in",
+      contact: "9422188203",
+      gpa: 8.85,
+      academic_interest: "Cybersecurity governance, penetration testing, and Zero-Trust identity access management.",
+      avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 5,
+      university_id: "24010091",
+      full_name: "Tanvi P. Deshmukh",
+      department: "Electronics & Telecommunication",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "tanvi.deshmukh.24@stvincentngp.edu.in",
+      contact: "9764512390",
+      gpa: 8.92,
+      academic_interest: "IoT sensor networks, Embedded C, and Smart Agriculture telemetry systems.",
+      avatar_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 6,
+      university_id: "25010034",
+      full_name: "Aditya K. Nair",
+      department: "Computer Science & Engineering",
+      academic_year: "2nd Year",
+      semester: "IIIrd Semester",
+      email: "aditya.nair.25@stvincentngp.edu.in",
+      contact: "9158234901",
+      gpa: 8.76,
+      academic_interest: "Data Structures & Algorithms, competitive coding, and React Native mobile application development.",
+      avatar_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 7,
+      university_id: "24010055",
+      full_name: "Sneha M. Patil",
+      department: "Information Technology",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "sneha.patil.24@stvincentngp.edu.in",
+      contact: "9822765104",
+      gpa: 9.04,
+      academic_interest: "Modern UI/UX design systems, Figma component architecture, and responsive frontend interfaces.",
+      avatar_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 8,
+      university_id: "23010088",
+      full_name: "Nikhil B. Joshi",
+      department: "Mechanical Engineering",
+      academic_year: "4th Year",
+      semester: "VIIth Semester",
+      email: "nikhil.joshi.23@stvincentngp.edu.in",
+      contact: "9371049281",
+      gpa: 8.68,
+      academic_interest: "Automotive CFD simulation, CAD modeling in SolidWorks, and Electric Vehicle battery cooling thermodynamics.",
+      avatar_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 9,
+      university_id: "25010012",
+      full_name: "Ananya S. Rao",
+      department: "Artificial Intelligence & Data Science",
+      academic_year: "2nd Year",
+      semester: "IIIrd Semester",
+      email: "ananya.rao.25@stvincentngp.edu.in",
+      contact: "9423871092",
+      gpa: 9.21,
+      academic_interest: "Natural Language Processing, Large Language Models, and RAG architectures using vector databases.",
+      avatar_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 10,
+      university_id: "24010029",
+      full_name: "Yash V. Choudhary",
+      department: "Civil Engineering",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "yash.choudhary.24@stvincentngp.edu.in",
+      contact: "9860341982",
+      gpa: 8.55,
+      academic_interest: "Smart Urban Planning, BIM (Building Information Modeling), and sustainable green infrastructure materials.",
+      avatar_url: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 11,
+      university_id: "23010064",
+      full_name: "Ritu G. Bisen",
+      department: "Computer Science & Engineering",
+      academic_year: "4th Year",
+      semester: "VIIth Semester",
+      email: "ritu.bisen.23@stvincentngp.edu.in",
+      contact: "9175024819",
+      gpa: 9.15,
+      academic_interest: "DevOps automation, Kubernetes cluster orchestration, and CI/CD pipeline optimization.",
+      avatar_url: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    },
+    {
+      id: 12,
+      university_id: "24010103",
+      full_name: "Vaibhav D. Meshram",
+      department: "Electronics & Telecommunication",
+      academic_year: "3rd Year",
+      semester: "Vth Semester",
+      email: "vaibhav.meshram.24@stvincentngp.edu.in",
+      contact: "9823901174",
+      gpa: 8.80,
+      academic_interest: "VLSI chip design, Verilog HDL synthesis, and FPGA-based hardware acceleration.",
+      avatar_url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    }
+  ],
+
+  articles: [
+    {
+      id: 1,
+      title: "Breakthrough in WebAssembly: Running Multi-Threaded Neural Networks in the Browser",
+      category: "Technology",
+      author: "Harshada Dinesh Lonare",
+      publication_date: "2026-10-28",
+      read_time: "5 min read",
+      summary: "How modern browser specifications and SIMD operations are bringing server-grade inference directly to client-side web applications with zero latency.",
+      content: "The evolution of client-side web computing has reached an extraordinary inflection point. With the stabilization of WebAssembly threads, SIMD vector instructions, and WebGPU compute pipelines, modern web applications can now execute multi-billion parameter tensor workloads directly in the user agent.\n\nIn our engineering lab at St. Vincent Pallotti College of Engineering & Technology, we benchmarked relational SQL engines running compiled inside web workers against traditional REST backends. The findings demonstrate that client-side execution not only eliminates server bottlenecks but also provides unmatched data sovereignty and zero-latency user experiences.",
+      image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+      is_breaking: true,
+      is_lead: true,
+      views_count: 3840
+    },
+    {
+      id: 2,
+      title: "Autonomous Drone Swarms Deployed for Precision Agriculture Across Vidarbha Region",
+      category: "Science & Space",
+      author: "Priya Kulkarni",
+      publication_date: "2026-10-27",
+      read_time: "4 min read",
+      summary: "Farmers across Maharashtra leverage multispectral drone imagery and AI crop diagnostics to cut pesticide usage by 40%.",
+      content: "Agriculture in central India is witnessing a technological renaissance. A consortium of local engineering universities and agro-tech innovators has rolled out an automated drone fleet capable of surveying hundreds of acres of cotton and soybean crops in minutes.\n\nEquipped with edge-computing micro-controllers, the drones analyze leaf chlorophyll, moisture deficits, and pest hotspots, sending real-time SMS alerts and telemetry dashboards directly to farmers' smartphones.",
+      image_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80",
+      is_breaking: false,
+      is_lead: false,
+      views_count: 2190
+    },
+    {
+      id: 3,
+      title: "Higher Education Reforms: NEP 2026 Mandates Hands-On Full Stack Engineering Practicals",
+      category: "Education & Campus",
+      author: "Academic Council Correspondent",
+      publication_date: "2026-10-26",
+      read_time: "3 min read",
+      summary: "Universities replace theoretical viva examinations with live production-style web platform evaluations and GitHub portfolio defenses.",
+      content: "Under the latest technical education guidelines, undergraduate students in Computer Science and Information Technology are now evaluated on real-world engineering prototypes rather than paper-and-pen assessments.\n\nPlatforms such as NEXUS STUDIO embody this pedagogy by demanding responsive UI implementations, relational database schemas, and end-to-end interactive workflows built directly by students.",
+      image_url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+      is_breaking: false,
+      is_lead: false,
+      views_count: 4510
+    },
+    {
+      id: 4,
+      title: "Global Semiconductor Demand Surges as 2nm Fabrication Enters Mass Production",
+      category: "Business & Markets",
+      author: "Market Intelligence Desk",
+      publication_date: "2026-10-25",
+      read_time: "6 min read",
+      summary: "Next-generation lithography achieves 35% performance gains with 40% power efficiency reduction, powering new AI hardware.",
+      content: "Leading semiconductor foundries have officially commenced high-volume manufacturing of 2-nanometer gate-all-around (GAA) nanosheet transistors. The technological milestone is poised to transform smartphones, hyperscale cloud data centers, and embedded automotive processors over the coming decade.",
+      image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+      is_breaking: false,
+      is_lead: false,
+      views_count: 1820
+    },
+    {
+      id: 6,
+      title: "Inter-Collegiate Sports Championship 2026: Pallotti Athletes Clinch Gold in Table Tennis & Badminton",
+      category: "Sports",
+      author: "Sports Correspondent",
+      publication_date: "2026-10-23",
+      read_time: "3 min read",
+      summary: "St. Vincent Pallotti College of Engineering & Technology dominates the annual university sports meet with record medal tally.",
+      content: "In an exhilarating tournament finale held at the divisional sports complex, the SVPCET sports contingent lifted the championship trophy following back-to-back victories in both singles and doubles badminton and table tennis championships.",
+      image_url: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80",
+      is_breaking: false,
+      is_lead: false,
+      views_count: 1470
+    }
+  ],
+
+  newsletter_subscriptions: [
+    { id: 1, email: "harshadalonare15@gmail.com", subscribed_at: "2026-10-20 11:30:00" },
+    { id: 2, email: "faculty.evaluator@stvincentngp.edu.in", subscribed_at: "2026-10-22 14:10:00" }
+  ],
+
+  contact_messages: [
+    {
+      id: 1,
+      sender_name: "Academic Evaluator",
+      email: "evaluator@stvincentngp.edu.in",
+      subject: "Faculty Evaluation of Practical Projects 1 to 6",
+      message: "Commendable work on the unified Nexus Studio platform. The responsive layouts, PostgreSQL integration, and project fidelity are well constructed.",
+      status: "read",
+      submitted_at: "2026-10-28 11:00:00"
+    }
+  ]
+};
+
+
+// --- SOURCE: src\database\sqlEngine.js ---
+// In-Browser SQL Parsing and Execution Engine for NEXUS STUDIO
+// Executes real SQL queries against the relational schema
+
+function executeSQL(query, database) {
+  const startTime = performance.now();
+  const trimmed = query.trim().replace(/;$/, "");
+  if (!trimmed) {
+    throw new Error("Empty SQL query.");
+  }
+
+  const normalized = trimmed.replace(/\s+/g, " ");
+  const commandMatch = normalized.match(/^(\w+)/i);
+  if (!commandMatch) {
+    throw new Error("Invalid SQL syntax: missing command.");
+  }
+  const command = commandMatch[1].toUpperCase();
+
+  // 1. SHOW TABLES
+  if (/^SHOW\s+TABLES/i.test(normalized)) {
+    const tableNames = Object.keys(database.tables);
+    const endTime = performance.now();
+    return {
+      command: "SHOW",
+      columns: ["table_name", "total_records"],
+      rows: tableNames.map(t => ({ table_name: t, total_records: database.tables[t].length })),
+      rowCount: tableNames.length,
+      executionTimeMs: (endTime - startTime).toFixed(2)
+    };
+  }
+
+  // 2. SELECT
+  if (command === "SELECT") {
+    // Basic regex parser for SELECT [columns] FROM [table] [WHERE condition] [ORDER BY col [ASC|DESC]] [LIMIT n]
+    const selectRegex = /^SELECT\s+(.+?)\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+?))?(?:\s+ORDER\s+BY\s+(\w+)(?:\s+(ASC|DESC))?)?(?:\s+LIMIT\s+(\d+))?$/i;
+    const match = normalized.match(selectRegex);
+
+    if (!match) {
+      // Fallback for simple SELECT * FROM table
+      const simpleMatch = normalized.match(/^SELECT\s+(.+?)\s+FROM\s+(\w+)/i);
+      if (!simpleMatch) {
+        throw new Error("Syntax error near SELECT. Supported: SELECT [cols] FROM [table] WHERE ... ORDER BY ... LIMIT ...");
+      }
+      const rawCols = simpleMatch[1].trim();
+      const tableName = simpleMatch[2].toLowerCase();
+      if (!database.tables[tableName]) {
+        throw new Error(`Table '${tableName}' does not exist in schema.`);
+      }
+      let rows = [...database.tables[tableName]];
+      const columns = rawCols === "*" ? Object.keys(rows[0] || {}) : rawCols.split(",").map(c => c.trim());
+      const endTime = performance.now();
+      return {
+        command: "SELECT",
+        columns,
+        rows: filterColumns(rows, columns),
+        rowCount: rows.length,
+        executionTimeMs: (endTime - startTime).toFixed(2)
+      };
+    }
+
+    const [, selectCols, tableNameRaw, whereClause, orderCol, orderDir, limitStr] = match;
+    const tableName = tableNameRaw.toLowerCase();
+
+    if (!database.tables[tableName]) {
+      throw new Error(`Relation '${tableName}' does not exist.`);
+    }
+
+    let rows = [...database.tables[tableName]];
+
+    // Handle WHERE
+    if (whereClause) {
+      rows = rows.filter(row => evaluateCondition(row, whereClause));
+    }
+
+    // Handle ORDER BY
+    if (orderCol) {
+      const dir = (orderDir || "ASC").toUpperCase();
+      rows.sort((a, b) => {
+        const valA = a[orderCol];
+        const valB = b[orderCol];
+        if (valA === valB) return 0;
+        if (dir === "DESC") return valA < valB ? 1 : -1;
+        return valA > valB ? 1 : -1;
+      });
+    }
+
+    // Handle LIMIT
+    if (limitStr) {
+      rows = rows.slice(0, parseInt(limitStr, 10));
+    }
+
+    // Handle Columns
+    const columns = selectCols.trim() === "*" 
+      ? (rows.length > 0 ? Object.keys(rows[0]) : ["id"]) 
+      : selectCols.split(",").map(c => c.trim());
+
+    const filteredRows = filterColumns(rows, columns);
+    const endTime = performance.now();
+
+    return {
+      command: "SELECT",
+      columns,
+      rows: filteredRows,
+      rowCount: filteredRows.length,
+      executionTimeMs: (endTime - startTime).toFixed(2)
+    };
+  }
+
+  // 3. INSERT INTO table (cols) VALUES (vals)
+  if (command === "INSERT") {
+    const insertRegex = /^INSERT\s+INTO\s+(\w+)\s*\((.+?)\)\s*VALUES\s*\((.+?)\)$/i;
+    const match = normalized.match(insertRegex);
+
+    if (!match) {
+      throw new Error("Syntax error near INSERT. Format: INSERT INTO table (col1, col2) VALUES (val1, val2)");
+    }
+
+    const [, tableNameRaw, colsStr, valsStr] = match;
+    const tableName = tableNameRaw.toLowerCase();
+
+    if (!database.tables[tableName]) {
+      throw new Error(`Relation '${tableName}' does not exist.`);
+    }
+
+    const cols = colsStr.split(",").map(c => c.trim().replace(/['"]/g, ""));
+    const vals = parseValues(valsStr);
+
+    if (cols.length !== vals.length) {
+      throw new Error(`Column count (${cols.length}) does not match values count (${vals.length}).`);
+    }
+
+    const newRecord = {};
+    cols.forEach((col, idx) => {
+      newRecord[col] = vals[idx];
+    });
+
+    // Auto-generate ID if not present
+    if (!newRecord.id) {
+      const maxId = database.tables[tableName].reduce((max, r) => Math.max(max, Number(r.id) || 0), 0);
+      newRecord.id = maxId + 1;
+    }
+
+    if (!newRecord.created_at) {
+      newRecord.created_at = new Date().toISOString().replace("T", " ").substring(0, 19);
+    }
+
+    database.tables[tableName].push(newRecord);
+    database.save();
+
+    const endTime = performance.now();
+    return {
+      command: "INSERT",
+      columns: Object.keys(newRecord),
+      rows: [newRecord],
+      rowCount: 1,
+      executionTimeMs: (endTime - startTime).toFixed(2)
+    };
+  }
+
+  // 4. UPDATE table SET col = val WHERE condition
+  if (command === "UPDATE") {
+    const updateRegex = /^UPDATE\s+(\w+)\s+SET\s+(.+?)(?:\s+WHERE\s+(.+?))?$/i;
+    const match = normalized.match(updateRegex);
+    if (!match) {
+      throw new Error("Syntax error near UPDATE. Format: UPDATE table SET col=val WHERE cond");
+    }
+
+    const [, tableNameRaw, setClause, whereClause] = match;
+    const tableName = tableNameRaw.toLowerCase();
+    if (!database.tables[tableName]) {
+      throw new Error(`Relation '${tableName}' does not exist.`);
+    }
+
+    const setPairs = setClause.split(",").map(pair => {
+      const [col, rawVal] = pair.split("=").map(s => s.trim());
+      let val = rawVal.replace(/^['"]|['"]$/g, "");
+      if (val === "true") val = true;
+      if (val === "false") val = false;
+      if (!isNaN(val) && val !== "") val = Number(val);
+      return { col, val };
+    });
+
+    let count = 0;
+    database.tables[tableName] = database.tables[tableName].map(row => {
+      if (!whereClause || evaluateCondition(row, whereClause)) {
+        count++;
+        const updated = { ...row };
+        setPairs.forEach(({ col, val }) => {
+          updated[col] = val;
+        });
+        return updated;
+      }
+      return row;
+    });
+
+    database.save();
+    const endTime = performance.now();
+    return {
+      command: "UPDATE",
+      columns: ["updated_count"],
+      rows: [{ updated_count: count }],
+      rowCount: count,
+      executionTimeMs: (endTime - startTime).toFixed(2)
+    };
+  }
+
+  // 5. DELETE FROM table WHERE condition
+  if (command === "DELETE") {
+    const deleteRegex = /^DELETE\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+?))?$/i;
+    const match = normalized.match(deleteRegex);
+    if (!match) {
+      throw new Error("Syntax error near DELETE. Format: DELETE FROM table WHERE cond");
+    }
+
+    const [, tableNameRaw, whereClause] = match;
+    const tableName = tableNameRaw.toLowerCase();
+    if (!database.tables[tableName]) {
+      throw new Error(`Relation '${tableName}' does not exist.`);
+    }
+
+    const initialLen = database.tables[tableName].length;
+    database.tables[tableName] = database.tables[tableName].filter(row => {
+      if (!whereClause) return false;
+      return !evaluateCondition(row, whereClause);
+    });
+
+    const deleted = initialLen - database.tables[tableName].length;
+    database.save();
+    const endTime = performance.now();
+    return {
+      command: "DELETE",
+      columns: ["deleted_count"],
+      rows: [{ deleted_count: deleted }],
+      rowCount: deleted,
+      executionTimeMs: (endTime - startTime).toFixed(2)
+    };
+  }
+
+  throw new Error(`Unsupported SQL command: '${command}'. Supported commands: SELECT, INSERT, UPDATE, DELETE, SHOW TABLES.`);
+}
+
+function filterColumns(rows, columns) {
+  if (columns.length === 1 && columns[0] === "*") return rows;
+  return rows.map(r => {
+    const out = {};
+    columns.forEach(c => {
+      out[c] = r[c] !== undefined ? r[c] : null;
+    });
+    return out;
+  });
+}
+
+function evaluateCondition(row, conditionStr) {
+  // Supports equality (=), LIKE, >, <, !=
+  if (conditionStr.includes("=")) {
+    const [col, rawVal] = conditionStr.split("=").map(s => s.trim());
+    const val = rawVal.replace(/^['"]|['"]$/g, "");
+    return String(row[col]).toLowerCase() === String(val).toLowerCase();
+  }
+  if (conditionStr.toUpperCase().includes(" LIKE ")) {
+    const [col, rawVal] = conditionStr.split(/LIKE/i).map(s => s.trim());
+    const pattern = rawVal.replace(/^['"]|['"]$/g, "").replace(/%/g, ".*");
+    const re = new RegExp(pattern, "i");
+    return re.test(String(row[col]));
+  }
+  if (conditionStr.includes(">")) {
+    const [col, rawVal] = conditionStr.split(">").map(s => s.trim());
+    return Number(row[col]) > Number(rawVal);
+  }
+  if (conditionStr.includes("<")) {
+    const [col, rawVal] = conditionStr.split("<").map(s => s.trim());
+    return Number(row[col]) < Number(rawVal);
+  }
+  return true;
+}
+
+function parseValues(valsStr) {
+  const result = [];
+  let current = "";
+  let inQuote = false;
+
+  for (let i = 0; i < valsStr.length; i++) {
+    const ch = valsStr[i];
+    if (ch === "'" || ch === '"') {
+      inQuote = !inQuote;
+    } else if (ch === "," && !inQuote) {
+      result.push(cleanVal(current));
+      current = "";
+      continue;
+    }
+    current += ch;
+  }
+  if (current.trim()) {
+    result.push(cleanVal(current));
+  }
+  return result;
+}
+
+function cleanVal(str) {
+  const trimmed = str.trim();
+  if (trimmed.startsWith("'") && trimmed.endsWith("'")) {
+    return trimmed.slice(1, -1);
+  }
+  if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+    return trimmed.slice(1, -1);
+  }
+  if (trimmed === "true") return true;
+  if (trimmed === "false") return false;
+  if (trimmed === "null" || trimmed === "NULL") return null;
+  if (!isNaN(trimmed) && trimmed !== "") return Number(trimmed);
+  return trimmed;
+}
+
+
+// --- SOURCE: src\database\postgresClient.js ---
+// PostgreSQL Browser-Engine Client for NEXUS STUDIO
+// Provides relational SQL execution, table subscriptions, and Web Crypto password hashing
+
+
+
+
+const STORAGE_KEY = "nexus_studio_postgres_v1";
+
+class PostgresDatabase {
+  constructor() {
+    this.tables = {};
+    this.listeners = new Set();
+    this.init();
+  }
+
+  init() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        this.tables = JSON.parse(stored);
+        // Ensure all schema tables exist even if old version in storage
+        Object.keys(INITIAL_DATA).forEach(k => {
+          if (!this.tables[k]) {
+            this.tables[k] = JSON.parse(JSON.stringify(INITIAL_DATA[k]));
+          }
+        });
+        // Replace the old roast-duck card in already-saved browser data.
+        const menu = this.tables.restaurant_menu_items || [];
+        const duckIndex = menu.findIndex(item => /roast duck|peking duck/i.test(item.name || ""));
+        if (duckIndex !== -1) {
+          menu[duckIndex] = {
+            ...menu[duckIndex],
+            name: "Boba Tea",
+            category: "Beverages & Desserts",
+            description: "Creamy, refreshing milk tea served chilled with chewy tapioca pearls.",
+            image_url: "https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80",
+            is_chef_special: false,
+            is_available: true
+          };
+        }
+        const bobaIndexes = menu
+          .map((item, index) => /boba tea/i.test(item.name || "") ? index : -1)
+          .filter(index => index !== -1);
+        if (bobaIndexes.length > 1) {
+          bobaIndexes.slice(1).reverse().forEach(index => menu.splice(index, 1));
+        }
+        this.tables.restaurant_menu_items = menu;
+      } else {
+        this.resetDatabase();
+      }
+    } catch (e) {
+      console.warn("Storage initialization fallback to seed data:", e);
+      this.resetDatabase();
+    }
+  }
+
+  save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.tables));
+      this.notifyListeners();
+    } catch (err) {
+      console.error("Failed to persist database state:", err);
+    }
+  }
+
+  resetDatabase() {
+    this.tables = JSON.parse(JSON.stringify(INITIAL_DATA));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.tables));
+    this.notifyListeners();
+    return { success: true, message: "Database re-seeded with factory demonstration records." };
+  }
+
+  subscribe(callback) {
+    this.listeners.add(callback);
+    return () => this.listeners.delete(callback);
+  }
+
+  notifyListeners() {
+    this.listeners.forEach(cb => {
+      try { cb(this.tables); } catch (err) { console.error(err); }
+    });
+  }
+
+  getTable(tableName) {
+    return this.tables[tableName] ? [...this.tables[tableName]] : [];
+  }
+
+  query(sqlQuery) {
+    return executeSQL(sqlQuery, this);
+  }
+
+  // Cryptographic SHA-256 Hashing using browser Web Crypto API
+  async hashPassword(plainText) {
+    if (!window.crypto || !window.crypto.subtle) {
+      // Fallback simple hash for older environments
+      let hash = 0;
+      for (let i = 0; i < plainText.length; i++) {
+        hash = ((hash << 5) - hash) + plainText.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16).padStart(64, "0");
+    }
+    const msgBuffer = new TextEncoder().encode(plainText);
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  // --- Specific Project Convenience APIs ---
+
+  // 1. Authentication & Users
+  async registerUser({ fullName, email, password, role = "Student Member" }) {
+    const existing = this.getTable("users").find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      throw new Error(`Email '${email}' is already registered in PostgreSQL users table.`);
+    }
+    const password_hash = await this.hashPassword(password);
+    const query = `INSERT INTO users (full_name, email, password_hash, role, status) VALUES ('${fullName.replace(/'/g, "''")}', '${email.toLowerCase()}', '${password_hash}', '${role}', 'active')`;
+    return this.query(query);
+  }
+
+  async loginUser(email, password) {
+    const users = this.getTable("users");
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!user) {
+      throw new Error("No registered account found with that email address.");
+    }
+    const hashed = await this.hashPassword(password);
+    if (user.password_hash !== hashed) {
+      throw new Error("Incorrect password. Please verify your credentials.");
+    }
+    return {
+      id: user.id,
+      fullName: user.full_name,
+      email: user.email,
+      role: user.role,
+      status: user.status
+    };
+  }
+
+  // 2. Restaurant Orders & Reservations
+  createRestaurantOrder({ customerName, phone, address, items, subtotal, gst, deliveryFee, total, paymentMethod }) {
+    const orderCode = `DP-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newOrder = {
+      id: (this.tables.restaurant_orders.length || 0) + 1,
+      order_code: orderCode,
+      customer_name: customerName,
+      customer_phone: phone,
+      customer_address: address,
+      items,
+      subtotal,
+      gst,
+      delivery_fee: deliveryFee,
+      total,
+      payment_method: paymentMethod || "Cash on Delivery",
+      status: "Confirmed & In Kitchen",
+      created_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+    };
+    this.tables.restaurant_orders.unshift(newOrder);
+    this.save();
+    return newOrder;
+  }
+
+  createReservation({ guestName, email, phone, partySize, date, time, specialRequests }) {
+    const bookingCode = `DP-RES-2026-${Math.floor(100 + Math.random() * 900)}`;
+    const tableNumber = Math.floor(1 + Math.random() * 18);
+    const newRes = {
+      id: (this.tables.reservations.length || 0) + 1,
+      booking_code: bookingCode,
+      guest_name: guestName,
+      email,
+      phone,
+      party_size: Number(partySize),
+      reservation_date: date,
+      reservation_time: time,
+      table_number: tableNumber,
+      special_requests: specialRequests || "None specified",
+      status: "Confirmed",
+      created_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+    };
+    this.tables.reservations.unshift(newRes);
+    this.save();
+    return newRes;
+  }
+
+  // 3. ChronoLux Watch Orders & Wishlist
+  createWatchOrder({ customerName, email, address, city, state, postalCode, totalAmount, items }) {
+    const orderNumber = `CV-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+    const newOrder = {
+      id: (this.tables.orders.length || 0) + 1,
+      order_number: orderNumber,
+      customer_name: customerName,
+      email,
+      shipping_address: address,
+      city,
+      state,
+      postal_code: postalCode,
+      total_amount: Number(totalAmount),
+      status: "Processing VIP Dispatch",
+      items,
+      created_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+    };
+    this.tables.orders.unshift(newOrder);
+    this.save();
+    return newOrder;
+  }
+
+  toggleWishlist(userEmail, productId) {
+    const idx = this.tables.wishlists.findIndex(w => w.user_email === userEmail && w.product_id === productId);
+    if (idx > -1) {
+      this.tables.wishlists.splice(idx, 1);
+      this.save();
+      return { action: "removed", inWishlist: false };
+    } else {
+      this.tables.wishlists.push({
+        id: (this.tables.wishlists.length || 0) + 1,
+        user_email: userEmail,
+        product_id: productId,
+        created_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+      });
+      this.save();
+      return { action: "added", inWishlist: true };
+    }
+  }
+
+  // 4. Student Directory Management
+  addStudent(studentData) {
+    const maxId = this.tables.students.reduce((m, s) => Math.max(m, s.id || 0), 0);
+    const newStudent = {
+      id: maxId + 1,
+      university_id: studentData.university_id || `2401${Math.floor(1000 + Math.random() * 9000)}`,
+      full_name: studentData.full_name,
+      department: studentData.department,
+      academic_year: studentData.academic_year || "3rd Year",
+      semester: studentData.semester || "Vth Semester",
+      email: studentData.email,
+      contact: studentData.contact || "9823000000",
+      gpa: Number(studentData.gpa) || 8.90,
+      academic_interest: studentData.academic_interest || "Engineering and software development",
+      avatar_url: studentData.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      enrollment_status: "Currently Enrolled"
+    };
+    this.tables.students.push(newStudent);
+    this.save();
+    return newStudent;
+  }
+
+  // 5. Portfolio Contact Messages
+  submitContactMessage({ senderName, email, subject, message }) {
+    const newMsg = {
+      id: (this.tables.contact_messages.length || 0) + 1,
+      sender_name: senderName,
+      email,
+      subject: subject || "General Inquiry",
+      message,
+      status: "unread",
+      submitted_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+    };
+    this.tables.contact_messages.unshift(newMsg);
+    this.save();
+    return newMsg;
+  }
+
+  // 6. News Subscriptions
+  subscribeNewsletter(email) {
+    const existing = this.tables.newsletter_subscriptions.find(s => s.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      return { success: true, alreadySubscribed: true };
+    }
+    const newSub = {
+      id: (this.tables.newsletter_subscriptions.length || 0) + 1,
+      email: email.toLowerCase(),
+      subscribed_at: new Date().toISOString().replace("T", " ").substring(0, 19)
+    };
+    this.tables.newsletter_subscriptions.unshift(newSub);
+    this.save();
+    return { success: true, alreadySubscribed: false };
+  }
+}
+
+const db = new PostgresDatabase();
+
+
+// --- SOURCE: src\components\PortalCanvas.jsx ---
+// Interactive Ambient Portal Celestial Canvas Engine
+
+
+function PortalCanvas({ theme = "dark" }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let animationFrameId;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener("resize", handleResize);
+
+    const mouse = { x: width / 2, y: height / 2, radius: 140 };
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
+    // Create celestial particles
+    const particleCount = Math.min(Math.floor((width * height) / 16000), 75);
+    const particles = [];
+    const colors = theme === "dark" 
+      ? ["rgba(168, 85, 247, ", "rgba(56, 189, 248, ", "rgba(244, 114, 182, ", "rgba(251, 191, 36, "]
+      : ["rgba(147, 51, 234, ", "rgba(14, 165, 233, ", "rgba(225, 29, 72, ", "rgba(217, 119, 6, "];
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        size: Math.random() * 2.2 + 0.8,
+        colorBase: colors[Math.floor(Math.random() * colors.length)],
+        alpha: Math.random() * 0.6 + 0.2,
+        pulseSpeed: Math.random() * 0.02 + 0.005,
+        pulseVal: Math.random() * Math.PI
+      });
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw subtle celestial glow aura at center & cursor
+      const radialGradient = ctx.createRadialGradient(
+        mouse.x, mouse.y, 10,
+        mouse.x, mouse.y, 350
+      );
+      if (theme === "dark") {
+        radialGradient.addColorStop(0, "rgba(147, 51, 234, 0.08)");
+        radialGradient.addColorStop(0.5, "rgba(56, 189, 248, 0.03)");
+        radialGradient.addColorStop(1, "transparent");
+      } else {
+        radialGradient.addColorStop(0, "rgba(244, 114, 182, 0.07)");
+        radialGradient.addColorStop(0.5, "rgba(168, 85, 247, 0.03)");
+        radialGradient.addColorStop(1, "transparent");
+      }
+      ctx.fillStyle = radialGradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Move
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulseVal += p.pulseSpeed;
+
+        // Wrap boundaries
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        // Mouse proximity interaction
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) {
+          const force = (mouse.radius - dist) / mouse.radius;
+          p.x -= (dx / dist) * force * 1.5;
+          p.y -= (dy / dist) * force * 1.5;
+        }
+
+        // Pulse brightness
+        const currentAlpha = Math.sin(p.pulseVal) * 0.25 + p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `${p.colorBase}${Math.max(0.1, Math.min(1, currentAlpha))})`;
+        ctx.fill();
+
+        // Connect nearby stars with faint starlight threads
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist2 = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist2 < 110) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            const lineAlpha = (1 - dist2 / 110) * 0.15;
+            ctx.strokeStyle = theme === "dark" 
+              ? `rgba(168, 85, 247, ${lineAlpha})` 
+              : `rgba(147, 51, 234, ${lineAlpha * 0.8})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [theme]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-0"
+      style={{ opacity: 0.85 }}
+    />
+  );
+}
+
+
+// --- SOURCE: src\components\PortalClickSparkle.jsx ---
+// Click Sparkle & Dimension Ripple Animation Engine
+
+
+function PortalClickSparkle() {
+  const [ripples, setRipples] = useState([]);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      // Don't trigger on input typing
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+      const newRipple = {
+        id: Date.now() + Math.random(),
+        x: e.clientX,
+        y: e.clientY,
+        color: getRandomAuraColor()
+      };
+
+      setRipples((prev) => [...prev.slice(-12), newRipple]);
+
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+      }, 700);
+    };
+
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
+
+  const getRandomAuraColor = () => {
+    const colors = [
+      "rgba(168, 85, 247, 0.4)", // purple
+      "rgba(56, 189, 248, 0.4)",  // cyan
+      "rgba(244, 114, 182, 0.4)", // pink
+      "rgba(251, 191, 36, 0.4)",  // amber
+      "rgba(52, 211, 153, 0.4)"   // emerald
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+      {ripples.map((r) => (
+        <span
+          key={r.id}
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            left: r.x,
+            top: r.y,
+            width: "12px",
+            height: "12px",
+            marginLeft: "-6px",
+            marginTop: "-6px",
+            background: `radial-gradient(circle, ${r.color} 0%, transparent 70%)`,
+            boxShadow: `0 0 15px ${r.color}`,
+            animation: "rippleEffect 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards"
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\components\NotificationToast.jsx ---
+// Global Notification Toast System
+
+
+function NotificationToast({ toast, onDismiss }) {
+  if (!toast) return null;
+
+  const isSuccess = toast.type !== "error";
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50 max-w-md animate-slideUp">
+      <div className={`flex items-start gap-3 p-4 rounded-xl shadow-2xl backdrop-blur-md border ${
+        isSuccess
+          ? "bg-slate-900/95 border-emerald-500/40 text-slate-100 shadow-emerald-950/40"
+          : "bg-slate-900/95 border-rose-500/40 text-slate-100 shadow-rose-950/40"
+      }`}>
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+          isSuccess ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"
+        }`}>
+          {isSuccess ? "✓" : "⚠️"}
+        </div>
+        <div className="flex-1 text-xs">
+          <div className="font-bold text-sm mb-0.5">
+            {toast.title || (isSuccess ? "Success" : "Notification")}
+          </div>
+          <p className="text-slate-300 leading-relaxed">
+            {toast.message}
+          </p>
+          {toast.code && (
+            <div className="mt-1.5 font-mono text-[11px] px-2 py-0.5 rounded bg-slate-950 text-purple-300 inline-block border border-purple-500/30">
+              Reference: {toast.code}
+            </div>
+          )}
+        </div>
+        <button
+          onClick={onDismiss}
+          className="text-slate-500 hover:text-slate-300 text-sm ml-1"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\components\ProjectModal.jsx ---
+// Project Details & Academic Evaluation Criteria Modal
+
+
+function ProjectModal({ project, isOpen, onClose, onLaunch }) {
+  if (!isOpen || !project) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden text-slate-100 font-sans">
+        
+        {/* Banner with cover */}
+        <div className="relative h-44 w-full overflow-hidden bg-slate-950">
+          <img
+            src={project.coverImage}
+            alt={project.name}
+            className="w-full h-full object-cover opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+          
+          <div className="absolute top-4 left-4 flex gap-2">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/80 text-white backdrop-blur-md border border-purple-400/30">
+              {project.badge}
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-slate-800/80 text-slate-200 backdrop-blur-md border border-slate-700">
+              {project.category}
+            </span>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-slate-300 hover:text-white flex items-center justify-center transition"
+          >
+            ✕
+          </button>
+
+          <div className="absolute bottom-4 left-6 right-6">
+            <h3 className="text-2xl font-bold tracking-tight text-white drop-shadow-md">
+              {project.name}
+            </h3>
+            <p className="text-xs text-purple-300 font-medium">
+              {project.tagline}
+            </p>
+          </div>
+        </div>
+
+        {/* Modal Body */}
+        <div className="p-6 space-y-5 max-h-[60vh] overflow-y-auto">
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              Project Overview & Objectives
+            </h4>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+              Technologies & Architecture
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-1 text-xs rounded-md bg-slate-800 border border-slate-700 text-slate-200 font-mono"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+              Curricular Concepts Demonstrated
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {project.concepts.map((concept, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300"
+                >
+                  <span className="text-emerald-400 font-bold">✓</span>
+                  <span>{concept}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-purple-950/30 border border-purple-800/40 text-xs text-purple-200 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="font-semibold">PostgreSQL Relational Integration</span>
+            </div>
+            <span className="text-emerald-400 font-mono text-[11px]">Tables Connected</span>
+          </div>
+        </div>
+
+        {/* Modal Footer */}
+        <div className="flex items-center justify-end gap-3 px-6 py-4 bg-slate-950 border-t border-slate-800">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition"
+          >
+            Close
+          </button>
+          <button
+            onClick={() => {
+              onClose();
+              onLaunch(project.id);
+            }}
+            className="px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/30 transition flex items-center gap-2"
+          >
+            <span>Open Working Project</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\components\DatabaseStudioModal.jsx ---
+// Interactive PostgreSQL Database Studio & Query Inspector for Faculty Evaluation
+
+
+
+function DatabaseStudioModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
+  const [activeTab, setActiveTab] = useState("explorer"); // 'explorer' | 'query' | 'schema'
+  const [selectedTable, setSelectedTable] = useState("users");
+  const [sqlInput, setSqlInput] = useState("SELECT * FROM users ORDER BY id ASC LIMIT 10;");
+  const [queryResult, setQueryResult] = useState(null);
+  const [queryError, setQueryError] = useState(null);
+  const [tableSearch, setTableSearch] = useState("");
+  const [dbState, setDbState] = useState(db.tables);
+
+  useEffect(() => {
+    return db.subscribe((newTables) => {
+      setDbState({ ...newTables });
+    });
+  }, []);
+
+  const runQuery = (customSql) => {
+    const queryToExecute = customSql || sqlInput;
+    setQueryError(null);
+    try {
+      const res = db.query(queryToExecute);
+      setQueryResult(res);
+    } catch (err) {
+      setQueryError(err.message);
+      setQueryResult(null);
+    }
+  };
+
+  const handleQuickQuery = (sql) => {
+    setSqlInput(sql);
+    runQuery(sql);
+  };
+
+  const handleReset = () => {
+    if (window.confirm("Re-seed PostgreSQL tables with original demonstration records?")) {
+      db.resetDatabase();
+      setQueryResult(null);
+      setQueryError(null);
+    }
+  };
+
+  const tableList = Object.keys(dbState);
+  const currentRows = dbState[selectedTable] || [];
+  const filteredRows = currentRows.filter(r => {
+    if (!tableSearch) return true;
+    return JSON.stringify(r).toLowerCase().includes(tableSearch.toLowerCase());
+  });
+
+  const columns = currentRows.length > 0 ? Object.keys(currentRows[0]) : [];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-6xl max-h-[92vh] flex flex-col bg-slate-900 border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-950/50 overflow-hidden text-slate-100 font-sans">
+        
+        {/* Studio Top Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/60">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20 text-white font-bold text-lg">
+              🐘
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <h2 className="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                  PostgreSQL Studio & Inspector
+                  <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    ONLINE • v16.2
+                  </span>
+                </h2>
+              </div>
+              <p className="text-xs text-slate-400 font-mono">
+                Instance: <span className="text-purple-300">nexus_studio_db</span> | Port: 5432 | Dialect: ANSI SQL / PostgreSQL
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleReset}
+              className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-rose-900/50 text-slate-300 hover:text-rose-200 border border-slate-700 hover:border-rose-500/40 transition-colors"
+              title="Reset all tables to fresh evaluation state"
+            >
+              🔄 Reset Demo DB
+            </button>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="flex items-center justify-between px-6 py-2.5 bg-slate-950/80 border-b border-slate-800">
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setActiveTab("explorer")}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === "explorer"
+                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 font-semibold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              📊 Table Explorer ({tableList.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("query")}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === "query"
+                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 font-semibold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              ⚡ Interactive SQL Console
+            </button>
+            <button
+              onClick={() => setActiveTab("schema")}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === "schema"
+                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 font-semibold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              📜 Schema DDL & Constraints
+            </button>
+          </div>
+
+          <div className="text-xs text-slate-400 font-mono">
+            Total Live Records: <span className="text-emerald-400 font-bold">
+              {Object.values(dbState).reduce((acc, t) => acc + (t?.length || 0), 0)}
+            </span>
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto p-6 bg-slate-900/60">
+
+          {/* TAB 1: TABLE EXPLORER */}
+          {activeTab === "explorer" && (
+            <div className="flex flex-col md:flex-row gap-6 h-full">
+              {/* Tables Sidebar */}
+              <div className="w-full md:w-64 flex-shrink-0 space-y-1.5">
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2 mb-2">
+                  Relational Tables
+                </div>
+                <div className="space-y-1 max-h-[60vh] overflow-y-auto pr-1">
+                  {tableList.map((tableName) => {
+                    const count = dbState[tableName]?.length || 0;
+                    const isSelected = selectedTable === tableName;
+                    return (
+                      <button
+                        key={tableName}
+                        onClick={() => setSelectedTable(tableName)}
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-mono transition-all ${
+                          isSelected
+                            ? "bg-gradient-to-r from-purple-900/70 to-indigo-900/70 border border-purple-500/40 text-purple-200 font-semibold shadow-sm"
+                            : "bg-slate-950/40 hover:bg-slate-800 text-slate-300 border border-transparent"
+                        }`}
+                      >
+                        <span className="truncate">{tableName}</span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${isSelected ? 'bg-purple-500/30 text-purple-200' : 'bg-slate-800 text-slate-400'}`}>
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Table Data Viewer */}
+              <div className="flex-1 flex flex-col bg-slate-950/70 border border-slate-800 rounded-xl overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-950">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-mono font-bold text-purple-300">
+                      public.{selectedTable}
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      ({filteredRows.length} rows)
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search rows in table..."
+                    value={tableSearch}
+                    onChange={(e) => setTableSearch(e.target.value)}
+                    className="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-purple-500 w-52"
+                  />
+                </div>
+
+                <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[55vh]">
+                  {filteredRows.length === 0 ? (
+                    <div className="p-8 text-center text-slate-500 text-sm">
+                      No records found in table <span className="font-mono text-purple-400">{selectedTable}</span>.
+                    </div>
+                  ) : (
+                    <table className="w-full text-left text-xs font-mono border-collapse">
+                      <thead>
+                        <tr className="bg-slate-900/90 border-b border-slate-800 text-slate-300 sticky top-0">
+                          {columns.map((c) => (
+                            <th key={c} className="px-4 py-2.5 font-semibold uppercase tracking-wider text-[11px] whitespace-nowrap">
+                              {c}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/60">
+                        {filteredRows.map((row, idx) => (
+                          <tr key={idx} className="hover:bg-purple-950/20 transition-colors">
+                            {columns.map((c) => {
+                              const val = row[c];
+                              const isObj = typeof val === "object" && val !== null;
+                              return (
+                                <td key={c} className="px-4 py-2.5 whitespace-nowrap text-slate-300 max-w-xs truncate" title={isObj ? JSON.stringify(val) : String(val)}>
+                                  {isObj ? (
+                                    <span className="text-purple-400 font-mono text-[10px]">
+                                      {JSON.stringify(val)}
+                                    </span>
+                                  ) : c.includes("hash") ? (
+                                    <span className="text-slate-500 text-[10px] truncate block w-28">
+                                      {String(val)}
+                                    </span>
+                                  ) : c.includes("price") || c.includes("total") || c.includes("amount") ? (
+                                    <span className="text-emerald-400 font-bold">
+                                      ₹{Number(val).toLocaleString()}
+                                    </span>
+                                  ) : (
+                                    String(val)
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: INTERACTIVE SQL CONSOLE */}
+          {activeTab === "query" && (
+            <div className="space-y-4">
+              {/* Quick Query Pills */}
+              <div className="flex flex-wrap gap-2 items-center text-xs">
+                <span className="text-slate-400 font-semibold mr-1">Quick Queries:</span>
+                <button
+                  onClick={() => handleQuickQuery("SELECT * FROM users;")}
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-purple-900/60 text-purple-300 border border-slate-700 font-mono transition"
+                >
+                  SELECT * FROM users
+                </button>
+                <button
+                  onClick={() => handleQuickQuery("SELECT name, price, brand FROM products ORDER BY price DESC;")}
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-purple-900/60 text-purple-300 border border-slate-700 font-mono transition"
+                >
+                  Watches by Price
+                </button>
+                <button
+                  onClick={() => handleQuickQuery("SELECT * FROM students WHERE department = 'Information Technology';")}
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-purple-900/60 text-purple-300 border border-slate-700 font-mono transition"
+                >
+                  IT Students
+                </button>
+                <button
+                  onClick={() => handleQuickQuery("SELECT * FROM reservations;")}
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-purple-900/60 text-purple-300 border border-slate-700 font-mono transition"
+                >
+                  Table Reservations
+                </button>
+                <button
+                  onClick={() => handleQuickQuery("SELECT * FROM restaurant_orders;")}
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-purple-900/60 text-purple-300 border border-slate-700 font-mono transition"
+                >
+                  Restaurant Orders
+                </button>
+              </div>
+
+              {/* SQL Input Box */}
+              <div className="relative border border-slate-800 rounded-xl overflow-hidden bg-slate-950">
+                <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800 text-xs font-mono text-slate-400">
+                  <span>SQL Query Editor (PostgreSQL Syntax)</span>
+                  <span>Use Ctrl+Enter to Run</span>
+                </div>
+                <textarea
+                  value={sqlInput}
+                  onChange={(e) => setSqlInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                      runQuery();
+                    }
+                  }}
+                  rows={4}
+                  className="w-full p-4 font-mono text-sm bg-transparent text-emerald-300 focus:outline-none resize-none selection:bg-purple-600"
+                  placeholder="Enter SQL command here (e.g. SELECT * FROM users;)"
+                />
+                <div className="flex justify-between items-center px-4 py-2.5 bg-slate-900/80 border-t border-slate-800">
+                  <span className="text-[11px] text-slate-400">
+                    Supports: SELECT, INSERT, UPDATE, DELETE, SHOW TABLES, WHERE, ORDER BY, LIMIT
+                  </span>
+                  <button
+                    onClick={() => runQuery()}
+                    className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-md shadow-purple-600/30 transition flex items-center gap-1.5"
+                  >
+                    <span>▶ Execute Query</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Query Status / Errors */}
+              {queryError && (
+                <div className="p-4 rounded-xl bg-rose-950/60 border border-rose-800/80 text-rose-200 text-xs font-mono flex items-start gap-2">
+                  <span>⚠️</span>
+                  <div>
+                    <div className="font-bold">PostgreSQL Execution Error:</div>
+                    <div>{queryError}</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Query Result Grid */}
+              {queryResult && (
+                <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-950/90">
+                  <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-xs font-mono text-slate-300">
+                    <div>
+                      Command: <span className="text-purple-400 font-bold">{queryResult.command}</span> • Rows: <span className="text-emerald-400 font-bold">{queryResult.rowCount}</span>
+                    </div>
+                    <div>
+                      Execution Time: <span className="text-cyan-400">{queryResult.executionTimeMs} ms</span>
+                    </div>
+                  </div>
+
+                  <div className="max-h-72 overflow-auto">
+                    {queryResult.rows.length === 0 ? (
+                      <div className="p-6 text-center text-slate-500 text-xs font-mono">
+                        Query returned 0 rows.
+                      </div>
+                    ) : (
+                      <table className="w-full text-left text-xs font-mono border-collapse">
+                        <thead>
+                          <tr className="bg-slate-900 text-slate-300 border-b border-slate-800 sticky top-0">
+                            {queryResult.columns.map(col => (
+                              <th key={col} className="px-4 py-2 whitespace-nowrap font-semibold">
+                                {col}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-800/70">
+                          {queryResult.rows.map((row, i) => (
+                            <tr key={i} className="hover:bg-slate-900/60 transition">
+                              {queryResult.columns.map(col => (
+                                <td key={col} className="px-4 py-2 text-slate-300 whitespace-nowrap">
+                                  {typeof row[col] === "object" && row[col] !== null 
+                                    ? JSON.stringify(row[col]) 
+                                    : String(row[col] ?? "NULL")}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 3: SCHEMA DDL */}
+          {activeTab === "schema" && (
+            <div className="space-y-4">
+              <div className="text-xs text-slate-300 font-sans">
+                PostgreSQL schema definitions and constraints used across NEXUS STUDIO:
+              </div>
+              <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 max-h-[60vh] overflow-auto font-mono text-xs text-purple-300 leading-relaxed">
+                <pre>{`-- ==========================================================
+-- NEXUS STUDIO — Relational Schema (PostgreSQL 16)
+-- Author: Harshada Dinesh Lonare (SVPCET, Nagpur)
+-- ==========================================================
+
+-- 1. USERS TABLE
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'student',
+    status VARCHAR(50) DEFAULT 'active',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. RESTAURANT MENU ITEMS (Project 1 - Dragon Pearl)
+CREATE TABLE restaurant_menu_items (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    category VARCHAR(80) NOT NULL,
+    price NUMERIC(10, 2) NOT NULL,
+    description TEXT,
+    image_url VARCHAR(255),
+    is_chef_special BOOLEAN DEFAULT FALSE,
+    is_available BOOLEAN DEFAULT TRUE,
+    rating NUMERIC(3, 1) DEFAULT 4.8
+);
+
+-- 3. RESTAURANT ORDERS
+CREATE TABLE restaurant_orders (
+    id SERIAL PRIMARY KEY,
+    order_code VARCHAR(50) UNIQUE NOT NULL,
+    customer_name VARCHAR(150) NOT NULL,
+    customer_phone VARCHAR(30) NOT NULL,
+    customer_address TEXT,
+    items JSONB NOT NULL,
+    subtotal NUMERIC(10, 2) NOT NULL,
+    gst NUMERIC(10, 2) NOT NULL,
+    delivery_fee NUMERIC(10, 2) NOT NULL,
+    total NUMERIC(10, 2) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. TABLE RESERVATIONS
+CREATE TABLE reservations (
+    id SERIAL PRIMARY KEY,
+    booking_code VARCHAR(50) UNIQUE NOT NULL,
+    guest_name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    party_size INTEGER NOT NULL CHECK (party_size > 0),
+    reservation_date DATE NOT NULL,
+    reservation_time VARCHAR(20) NOT NULL,
+    table_number INTEGER,
+    special_requests TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. LUXURY WATCH PRODUCTS (Project 2 - ChronoLux)
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    brand VARCHAR(100) NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    collection VARCHAR(100),
+    price NUMERIC(12, 2) NOT NULL,
+    stock_quantity INTEGER DEFAULT 5,
+    case_size VARCHAR(50),
+    movement_type VARCHAR(100),
+    water_resistance VARCHAR(50),
+    image_url VARCHAR(255)
+);
+
+-- 6. CHRONOLUX WATCH ORDERS
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    order_number VARCHAR(50) UNIQUE NOT NULL,
+    customer_name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    shipping_address TEXT NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    total_amount NUMERIC(14, 2) NOT NULL,
+    items JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 7. STUDENTS DIRECTORY (Project 6 - Student Hub)
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    university_id VARCHAR(50) UNIQUE NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    academic_year VARCHAR(80) NOT NULL,
+    semester VARCHAR(50) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    contact VARCHAR(30),
+    gpa NUMERIC(3, 2),
+    academic_interest TEXT,
+    avatar_url VARCHAR(255)
+);`}</pre>
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* Modal Footer */}
+        <div className="flex items-center justify-between px-6 py-3 bg-slate-950 border-t border-slate-800 text-xs text-slate-400">
+          <div className="flex items-center space-x-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Real-time persistence active (Local Storage DB & Web Crypto Engine)</span>
+          </div>
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium transition"
+          >
+            Close Studio
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\layouts\MainLayout.jsx ---
+// Classy Dimensional Portal Layout & HUD
+
+
+
+function MainLayout({
+  activeView,
+  onNavigate,
+  onOpenDbStudio,
+  theme,
+  onToggleTheme,
+  currentUser,
+  children
+}) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const getDimensionMeta = () => {
+    switch (activeView) {
+      case "restaurant":
+        return { code: "DIMENSION // 01", name: "Dragon Pearl Culinary", color: "from-rose-500 to-amber-500", glow: "border-rose-500/40" };
+      case "chronolux":
+        return { code: "DIMENSION // 02", name: "ChronoVault Horology", color: "from-amber-400 to-yellow-600", glow: "border-amber-500/40" };
+      case "portfolio":
+        return { code: "DIMENSION // 03", name: "Harshada's Academic Lab", color: "from-purple-400 to-indigo-500", glow: "border-purple-500/40" };
+      case "auth":
+        return { code: "DIMENSION // 04", name: "SecureFlow Cyber Identity", color: "from-cyan-400 to-blue-500", glow: "border-cyan-500/40" };
+      case "news":
+        return { code: "DIMENSION // 05", name: "The Daily Brief Journal", color: "from-emerald-400 to-teal-500", glow: "border-emerald-500/40" };
+      case "student-hub":
+        return { code: "DIMENSION // 06", name: "SVPCET Student Registry", color: "from-emerald-600 to-yellow-500", glow: "border-emerald-600/40" };
+      default:
+        return { code: "NEXUS // CORE", name: "Engineering Command Portal", color: "from-purple-500 to-cyan-400", glow: "border-purple-500/40" };
+    }
+  };
+
+  const currentMeta = getDimensionMeta();
+  const isDark = theme === "dark";
+
+  return (
+    <div className={`min-h-screen relative transition-colors duration-500 font-sans ${
+      isDark ? "bg-[#080a12] text-slate-100" : "bg-[#f8f9fc] text-slate-900"
+    }`}>
+      
+      {/* Floating Classy Portal HUD Navbar */}
+      <header className="sticky top-3 z-40 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className={`rounded-2xl transition-all duration-300 shadow-2xl px-5 py-3 border backdrop-blur-2xl ${
+          isDark 
+            ? "bg-[#0d101d]/85 border-white/10 shadow-purple-950/30" 
+            : "bg-white/85 border-slate-200/90 shadow-slate-200/60"
+        }`}>
+          <div className="flex items-center justify-between">
+            
+            {/* Portal Brand Identity & Dimension Indicator */}
+            <div className="flex items-center space-x-3.5">
+              <button
+                onClick={() => onNavigate("dashboard")}
+                className="flex items-center space-x-3 group text-left"
+              >
+                <div className="relative">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-400 p-[1.5px] shadow-lg shadow-purple-600/25 group-hover:scale-105 transition-transform">
+                    <div className="w-full h-full rounded-[10px] bg-[#0c0e18] flex items-center justify-center text-white font-bold text-sm">
+                      <span className="text-base group-hover:rotate-45 transition-transform duration-300">✦</span>
+                    </div>
+                  </div>
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#080a12] animate-ping" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#080a12]" />
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-extrabold tracking-tight font-heading block leading-none">
+                      {SITE_CONFIG.platformName}
+                    </span>
+                    <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30">
+                      PORTAL 2.4
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-mono tracking-wider block mt-0.5">
+                    {SITE_CONFIG.subtitle}
+                  </span>
+                </div>
+              </button>
+
+              {/* Active Dimension Breadcrumb Pill */}
+              {activeView !== "dashboard" && (
+                <div className="hidden lg:flex items-center space-x-2 pl-3 border-l border-white/10 text-xs font-mono">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r ${currentMeta.color} text-black font-sans shadow-sm`}>
+                    {currentMeta.code}
+                  </span>
+                  <span className={isDark ? "text-slate-300" : "text-slate-600"}>
+                    {currentMeta.name}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Dimension Navigation Links */}
+            <nav className="hidden lg:flex items-center space-x-1 text-xs font-medium">
+              {[
+                { id: "dashboard", label: "Portal Core" },
+                { id: "restaurant", label: "01 Restaurant" },
+                { id: "chronolux", label: "02 ChronoLux" },
+                { id: "portfolio", label: "03 Portfolio" },
+                { id: "auth", label: "04 SecureFlow" },
+                { id: "news", label: "05 Daily Brief" },
+                { id: "student-hub", label: "06 Student Hub" },
+              ].map((item) => {
+                const isActive = activeView === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => onNavigate(item.id)}
+                    className={`px-3 py-1.5 rounded-xl transition-all duration-200 relative ${
+                      isActive
+                        ? isDark
+                          ? "bg-purple-600/25 text-purple-200 font-bold border border-purple-500/40 shadow-inner"
+                          : "bg-purple-100 text-purple-900 font-bold border border-purple-300"
+                        : isDark
+                          ? "text-slate-300 hover:text-white hover:bg-white/5"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                    }`}
+                  >
+                    {item.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3 h-0.5 bg-purple-400 rounded-full" />
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Action Buttons: PostgreSQL Studio, Theme Switcher & Author Badge */}
+            <div className="flex items-center space-x-2.5">
+              
+              {/* Theme Toggle Pill */}
+              <button
+                onClick={onToggleTheme}
+                className={`p-2 rounded-xl transition-all border text-xs flex items-center gap-1.5 ${
+                  isDark
+                    ? "bg-slate-900/90 hover:bg-slate-800 border-white/10 text-amber-300"
+                    : "bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800"
+                }`}
+                title={isDark ? "Switch to Celestial Pearl Mode" : "Switch to Cosmic Obsidian Mode"}
+              >
+                <span>{isDark ? "☀️" : "🌌"}</span>
+              </button>
+
+              {/* PostgreSQL Studio Launcher Button */}
+              <button
+                onClick={onOpenDbStudio}
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all shadow-sm flex items-center gap-1.5 border ${
+                  isDark
+                    ? "bg-gradient-to-r from-purple-900/40 via-indigo-900/40 to-slate-900 border-purple-500/40 text-purple-200 hover:border-purple-400"
+                    : "bg-purple-50 border-purple-300 text-purple-900 hover:bg-purple-100"
+                }`}
+                title="Open PostgreSQL Database Studio & SQL Console"
+              >
+                <span>🐘</span>
+                <span className="hidden sm:inline">Postgres DB</span>
+              </button>
+
+              {/* Harshada Profile Avatar & Quick Contact */}
+              <button
+                onClick={() => onNavigate("portfolio")}
+                className={`flex items-center space-x-2 p-1 pl-2.5 rounded-xl border text-xs transition group ${
+                  isDark
+                    ? "bg-slate-900/80 hover:bg-slate-800 border-white/10"
+                    : "bg-slate-100 hover:bg-slate-200 border-slate-200"
+                }`}
+                title="Harshada Dinesh Lonare (Lead Engineer)"
+              >
+                <span className="font-semibold hidden sm:inline text-[11px]">
+                  {SITE_CONFIG.student.preferredName}
+                </span>
+                <div className="relative">
+                  <img
+                    src={SITE_CONFIG.student.avatarUrl}
+                    alt={SITE_CONFIG.student.fullName}
+                    className="w-7 h-7 rounded-lg object-cover border border-purple-500/50 group-hover:scale-105 transition-transform"
+                  />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950" />
+                </div>
+              </button>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 rounded-xl bg-slate-800 text-slate-200 hover:text-white"
+              >
+                ☰
+              </button>
+            </div>
+
+          </div>
+
+          {/* Mobile Drawer Menu */}
+          {isMobileMenuOpen && (
+            <div className="lg:hidden pt-3 pb-1 mt-2 border-t border-white/10 grid grid-cols-2 gap-1.5 text-xs font-medium animate-slideDown">
+              {[
+                { id: "dashboard", label: "Portal Core" },
+                { id: "restaurant", label: "01 Restaurant" },
+                { id: "chronolux", label: "02 ChronoLux" },
+                { id: "portfolio", label: "03 Portfolio" },
+                { id: "auth", label: "04 SecureFlow" },
+                { id: "news", label: "05 Daily Brief" },
+                { id: "student-hub", label: "06 Student Hub" },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    onNavigate(item.id);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`p-2 rounded-xl text-left transition ${
+                    activeView === item.id
+                      ? "bg-purple-600 text-white font-bold"
+                      : isDark
+                        ? "bg-slate-900 hover:bg-slate-800 text-slate-200"
+                        : "bg-slate-100 hover:bg-slate-200 text-slate-800"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Main View Scene Container with Entry Animation */}
+      <main key={activeView} className="portal-scene-enter relative z-10">
+        {children}
+      </main>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\dashboard\DashboardView.jsx ---
+// Main Dashboard: NEXUS STUDIO — Dimensional Portal Gateway
+
+
+
+
+function DashboardView({ onNavigate, onOpenDetails, onOpenDbStudio, theme }) {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [hoveredPortal, setHoveredPortal] = useState(null);
+  const [dbStats, setDbStats] = useState({
+    usersCount: 3,
+    ordersCount: 1,
+    reservationsCount: 1,
+    studentsCount: 12,
+    totalRecords: 42
+  });
+
+  const isDark = theme === "dark";
+
+  // Live Clock
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Live Database Stats
+  useEffect(() => {
+    const updateStats = () => {
+      const u = db.getTable("users").length;
+      const ro = db.getTable("restaurant_orders").length;
+      const wo = db.getTable("orders").length;
+      const res = db.getTable("reservations").length;
+      const stu = db.getTable("students").length;
+      const total = Object.values(db.tables).reduce((acc, t) => acc + (t?.length || 0), 0);
+      setDbStats({
+        usersCount: u,
+        ordersCount: ro + wo,
+        reservationsCount: res,
+        studentsCount: stu,
+        totalRecords: total
+      });
+    };
+    updateStats();
+    return db.subscribe(updateStats);
+  }, []);
+
+  const categories = [
+    "All",
+    "Frontend & CSS",
+    "E-Commerce",
+    "Personal Portfolio",
+    "Full Stack & Auth",
+    "Editorial & Media",
+    "React & Components"
+  ];
+
+  const filteredProjects = SITE_CONFIG.projects.filter((p) => {
+    const matchesCat = activeCategory === "All" || p.category === activeCategory;
+    const matchesSearch =
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.technologies.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      p.concepts.some((c) => c.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchesCat && matchesSearch;
+  });
+
+  return (
+    <div className="relative pb-24 font-sans overflow-hidden">
+      
+      {/* Dimensional Ambient Atmospheric Glows */}
+      <div className="absolute top-10 right-0 w-[550px] h-[550px] bg-gradient-to-bl from-purple-600/20 via-pink-600/15 to-transparent rounded-full blur-3xl pointer-events-none -mr-32 -mt-20 portal-aura" />
+      <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-600/20 via-blue-600/10 to-transparent rounded-full blur-3xl pointer-events-none -ml-32" />
+
+      {/* Hero Portal Gateway Composition */}
+      <section className="relative px-4 sm:px-6 pt-8 pb-6 max-w-7xl mx-auto">
+        <div className={`relative rounded-3xl p-8 sm:p-12 overflow-hidden border backdrop-blur-2xl shadow-2xl transition-all duration-300 ${
+          isDark 
+            ? "bg-[#0d101e]/80 border-purple-500/30 shadow-purple-950/40" 
+            : "bg-white/80 border-purple-200/80 shadow-slate-200/80"
+        }`}>
+          
+          {/* Subtle cosmic grid background */}
+          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#a855f7_1.2px,transparent_1.2px)] [background-size:24px_24px]" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+            <div className="space-y-4 max-w-2xl">
+              
+              {/* Telemetry Pill */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-mono font-semibold backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span>DIMENSIONAL TELEMETRY // NAGPUR [21.1458° N, 79.0882° E]</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading leading-tight">
+                Enter the <br />
+                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 bg-clip-text text-transparent">
+                  Web Engineering Portal
+                </span>
+              </h1>
+
+              <p className={`text-sm sm:text-base leading-relaxed ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+                An interactive multi-dimensional engineering laboratory by <strong>Harshada Dinesh Lonare</strong>. 
+                Integrating six live practical architectures: cultural culinary dining, luxury Swiss horology, academic portfolio, cyber-animated authentication, digital editorial publishing, and the St. Vincent Pallotti student directory.
+              </p>
+
+              {/* Action Jump Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <button
+                  onClick={() => onNavigate("restaurant")}
+                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
+                >
+                  <span>Launch Dimension 01</span>
+                  <span>→</span>
+                </button>
+
+                <button
+                  onClick={() => onNavigate("portfolio")}
+                  className={`px-5 py-3 rounded-2xl font-semibold text-xs border transition-all flex items-center gap-2 ${
+                    isDark
+                      ? "bg-slate-900/80 hover:bg-slate-800 text-slate-200 border-white/10"
+                      : "bg-white hover:bg-slate-50 text-slate-800 border-slate-300"
+                  }`}
+                >
+                  <img
+                    src={SITE_CONFIG.student.avatarUrl}
+                    alt={SITE_CONFIG.student.preferredName}
+                    className="w-5 h-5 rounded-full object-cover border border-purple-400"
+                  />
+                  <span>Engineer Dossier</span>
+                </button>
+
+                <button
+                  onClick={onOpenDbStudio}
+                  className="px-4 py-3 rounded-2xl bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 font-mono text-xs font-semibold transition-all flex items-center gap-2"
+                >
+                  <span>🐘 PostgreSQL Live Studio</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Lead Engineer Card with Ethereal Border Glow */}
+            <div className={`w-full lg:w-80 p-5 rounded-2xl border shadow-xl space-y-4 ${
+              isDark ? "bg-[#0b0d19]/90 border-white/10" : "bg-white/90 border-slate-200"
+            }`}>
+              <div className="flex items-center gap-3.5">
+                <div className="relative">
+                  <div className="w-14 h-16 rounded-xl overflow-hidden border-2 border-purple-500/60 shadow-md">
+                    <img
+                      src={SITE_CONFIG.student.avatarUrl}
+                      alt={SITE_CONFIG.student.fullName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-950 flex items-center justify-center text-[8px] text-white font-bold" title="Verified Student Engineer">
+                    ✓
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white">
+                    {SITE_CONFIG.student.fullName}
+                  </h3>
+                  <p className="text-[11px] text-purple-400 font-medium">
+                    {SITE_CONFIG.student.degree}
+                  </p>
+                  <p className="text-[10px] text-slate-400">
+                    {SITE_CONFIG.student.collegeShort}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-white/10 space-y-1.5 text-[11px] font-mono">
+                <div className="flex justify-between text-slate-400">
+                  <span>Student Roll ID:</span>
+                  <span className="text-purple-400 font-semibold">{SITE_CONFIG.student.rollNo}</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Standing:</span>
+                  <span className="text-emerald-400">{SITE_CONFIG.student.semester}</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Portal Clock:</span>
+                  <span className={isDark ? "text-slate-200" : "text-slate-700"}>{currentTime.toLocaleTimeString()}</span>
+                </div>
+              </div>
+
+              <div className="pt-2 flex gap-2">
+                <a
+                  href={`mailto:${SITE_CONFIG.student.primaryEmail}`}
+                  className={`flex-1 text-center py-1.5 rounded-xl text-[11px] font-medium transition ${
+                    isDark ? "bg-slate-800 hover:bg-slate-700 text-slate-200" : "bg-slate-100 hover:bg-slate-200 text-slate-800"
+                  }`}
+                >
+                  Email
+                </a>
+                <a
+                  href={SITE_CONFIG.student.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`flex-1 text-center py-1.5 rounded-xl text-[11px] font-medium transition ${
+                    isDark ? "bg-slate-800 hover:bg-slate-700 text-slate-200" : "bg-slate-100 hover:bg-slate-200 text-slate-800"
+                  }`}
+                >
+                  GitHub
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Real Live Metrics Gateway Bar */}
+      <section className="px-4 sm:px-6 py-2 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+          {[
+            { label: "Active Dimensions", val: "06", sub: "Operational", color: "text-white" },
+            { label: "Interactive Circuits", val: "42+", sub: "Verified", color: "text-purple-400" },
+            { label: "Postgres Relational Tables", val: "07", sub: "Schema Live", color: "text-cyan-400" },
+            { label: "Persisted Rows", val: dbStats.totalRecords, sub: "Synchronized", color: "text-emerald-400" },
+            { label: "SVPCET Student Directory", val: dbStats.studentsCount, sub: "Dossiers", color: "text-amber-400" },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className={`p-4 rounded-2xl border backdrop-blur-md transition-all duration-300 hover:scale-[1.02] ${
+                isDark ? "bg-[#0b0e1b]/80 border-white/10" : "bg-white/80 border-slate-200"
+              }`}
+            >
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                {stat.label}
+              </div>
+              <div className={`text-2xl font-black mt-1 flex items-baseline gap-1.5 font-heading ${stat.color}`}>
+                <span>{stat.val}</span>
+                <span className="text-[10px] text-slate-400 font-mono font-normal">{stat.sub}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Filter and Search Bar */}
+      <section className="px-4 sm:px-6 pt-6 pb-2 max-w-7xl mx-auto space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  activeCategory === cat
+                    ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 scale-105"
+                    : isDark
+                      ? "bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-white/10"
+                      : "bg-white hover:bg-slate-100 text-slate-700 border border-slate-200"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Search Box with Portal Starlight Accent */}
+          <div className="relative w-full md:w-72">
+            <input
+              type="text"
+              placeholder="Search dimension, tech stack..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`w-full pl-9 pr-4 py-2 rounded-2xl text-xs focus:outline-none focus:border-purple-500 shadow-inner border transition ${
+                isDark
+                  ? "bg-slate-900/90 border-white/10 text-slate-200 placeholder-slate-500"
+                  : "bg-white border-slate-300 text-slate-800 placeholder-slate-400"
+              }`}
+            />
+            <span className="absolute left-3 top-2 text-slate-500 text-xs">
+              🔍
+            </span>
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 top-2 text-slate-400 hover:text-white text-xs"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+        </div>
+      </section>
+
+      {/* Six Dimension Portal Cards Grid — Pinteresty Classy Presentation */}
+      <section className="px-4 sm:px-6 py-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((project) => {
+            const isHovered = hoveredPortal === project.id;
+            return (
+              <div
+                key={project.id}
+                onMouseEnter={() => setHoveredPortal(project.id)}
+                onMouseLeave={() => setHoveredPortal(null)}
+                className={`group relative flex flex-col rounded-3xl border transition-all duration-400 transform hover:-translate-y-2 overflow-hidden shadow-xl ${
+                  isDark
+                    ? "bg-[#0b0e1b]/85 border-white/10 hover:border-purple-400/50 hover:shadow-2xl hover:shadow-purple-950/50"
+                    : "bg-white border-slate-200 hover:border-purple-300 hover:shadow-2xl hover:shadow-slate-300/80"
+                }`}
+              >
+                
+                {/* Visual Thumbnail Frame */}
+                <div className="relative h-56 w-full overflow-hidden bg-slate-950">
+                  <img
+                    src={project.coverImage}
+                    alt={project.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  
+                  {/* Subtle vignette gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-t ${
+                    isDark ? "from-[#0b0e1b] via-[#0b0e1b]/30 to-transparent" : "from-black/80 via-black/20 to-transparent"
+                  }`} />
+
+                  {/* Dimension Tag Badges */}
+                  <div className="absolute top-3.5 left-3.5 flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-600/90 text-white backdrop-blur-md shadow-sm border border-purple-400/30">
+                      {project.badge}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-black/60 text-slate-200 backdrop-blur-md border border-white/15">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  {/* Big Stylized Number */}
+                  <div className="absolute top-3.5 right-3.5 font-mono text-3xl font-black text-white/30 drop-shadow">
+                    {project.number}
+                  </div>
+
+                  {/* Title Overlay */}
+                  <div className="absolute bottom-3 left-4 right-4 text-white">
+                    <h3 className="text-xl font-bold font-heading tracking-tight leading-snug group-hover:text-purple-300 transition-colors">
+                      {project.name}
+                    </h3>
+                    <p className="text-[11px] text-purple-200/90 font-medium line-clamp-1 mt-0.5">
+                      {project.tagline}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="flex-1 p-5 flex flex-col justify-between space-y-4">
+                  <p className={`text-xs leading-relaxed line-clamp-3 ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+                    {project.description}
+                  </p>
+
+                  {/* Tech stack badges */}
+                  <div className="space-y-2">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                      Engineering Stack
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.technologies.slice(0, 4).map((tech, i) => (
+                        <span
+                          key={i}
+                          className={`px-2 py-0.5 text-[10px] rounded-md font-mono border ${
+                            isDark
+                              ? "bg-slate-950/80 border-white/10 text-slate-300"
+                              : "bg-slate-100 border-slate-200 text-slate-700"
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Portal Action Buttons */}
+                  <div className="pt-3 border-t border-white/10 flex items-center gap-2.5">
+                    <button
+                      onClick={() => onNavigate(project.id)}
+                      className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-purple-600/30 transition-all flex items-center justify-center gap-2 group-hover:shadow-purple-600/50"
+                    >
+                      <span>Enter Dimension</span>
+                      <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
+
+                    <button
+                      onClick={() => onOpenDetails(project)}
+                      className={`py-2.5 px-3.5 rounded-xl border text-xs font-semibold transition ${
+                        isDark
+                          ? "bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border-white/10"
+                          : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300"
+                      }`}
+                      title="Inspect Objectives & Rubric"
+                    >
+                      Dossier
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Classy Faculty Evaluation Terminal Footer */}
+      <section className="px-4 sm:px-6 pt-4 max-w-7xl mx-auto">
+        <div className={`p-6 rounded-3xl border flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-xl ${
+          isDark
+            ? "bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900/60 border-purple-500/30"
+            : "bg-gradient-to-r from-purple-50 via-indigo-50 to-white border-purple-200"
+        }`}>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-purple-600/20 border border-purple-500/40 flex items-center justify-center text-2xl">
+              🏛️
+            </div>
+            <div>
+              <h4 className="text-sm font-bold font-heading">
+                Ready for Faculty Review & Live Viva Defense
+              </h4>
+              <p className="text-xs text-slate-400">
+                All 6 practical modules are fully functional, responsive, and persist records into the in-browser PostgreSQL database engine.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              onClick={onOpenDbStudio}
+              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition shadow-md shadow-purple-600/20"
+            >
+              Open SQL Console
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\restaurant\DragonPearlView.jsx ---
+// Project 1 — Dragon Pearl & Cafe: Responsive Restaurant & Culinary Showcase
+
+
+
+function DragonPearlView({ onBackToDashboard, onShowToast }) {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [menuItems, setMenuItems] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
+  const [confirmedReservation, setConfirmedReservation] = useState(null);
+  const [confirmedOrder, setConfirmedOrder] = useState(null);
+
+  // Reservation form state
+  const [resForm, setResForm] = useState({
+    guestName: "Harshada Dinesh Lonare",
+    email: "harshadalonare.24@stvincentngp.edu.in",
+    phone: "+91 92269 25656",
+    partySize: 4,
+    date: "2026-11-05",
+    time: "19:30",
+    specialRequests: "Window booth overlooking the courtyard terrace"
+  });
+
+  // Load menu items from PostgreSQL database
+  useEffect(() => {
+    const loadItems = () => {
+      setMenuItems(db.getTable("restaurant_menu_items"));
+    };
+    loadItems();
+    return db.subscribe(loadItems);
+  }, []);
+
+  const categories = [
+    "All",
+    "Cafe Specials",
+    "Signature Mains",
+    "Dim Sum & Starters",
+    "Beverages & Desserts"
+  ];
+
+  const filteredDishes = menuItems.filter((dish) => {
+    const matchesCat = activeCategory === "All" || dish.category === activeCategory;
+    const matchesSearch =
+      dish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      dish.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
+
+  const addToCart = (dish) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === dish.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { ...dish, quantity: 1 }];
+    });
+    onShowToast({
+      title: "Added to Order Cart",
+      message: `${dish.name} added. View your cart to review and checkout.`,
+      type: "success"
+    });
+  };
+
+  const updateCartQty = (id, delta) => {
+    setCart((prev) => {
+      return prev
+        .map((item) => {
+          if (item.id === id) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        })
+        .filter(Boolean);
+    });
+  };
+
+  const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const gst = cartSubtotal * 0.05;
+  const deliveryFee = cartSubtotal > 0 ? 40 : 0;
+  const cartTotal = cartSubtotal + gst + deliveryFee;
+
+  const handlePlaceOrder = () => {
+    if (cart.length === 0) return;
+    const order = db.createRestaurantOrder({
+      customerName: resForm.guestName || "Harshada Lonare",
+      phone: resForm.phone || "+91 92269 25656",
+      address: "SVPCET Campus, Wardha Road, Nagpur",
+      items: cart,
+      subtotal: cartSubtotal,
+      gst,
+      deliveryFee,
+      total: cartTotal,
+      paymentMethod: "UPI / Demo Pay"
+    });
+    setConfirmedOrder(order);
+    setCart([]);
+    setIsCartOpen(false);
+    onShowToast({
+      title: "Order Placed Successfully",
+      message: `Your culinary order #${order.order_code} has been sent to the kitchen and recorded in PostgreSQL.`,
+      code: order.order_code,
+      type: "success"
+    });
+  };
+
+  const handleReservationSubmit = (e) => {
+    e.preventDefault();
+    if (!resForm.guestName || !resForm.phone || !resForm.date || !resForm.time) {
+      alert("Please fill in all required reservation fields.");
+      return;
+    }
+    const res = db.createReservation({
+      guestName: resForm.guestName,
+      email: resForm.email,
+      phone: resForm.phone,
+      partySize: resForm.partySize,
+      date: resForm.date,
+      time: resForm.time,
+      specialRequests: resForm.specialRequests
+    });
+    setConfirmedReservation(res);
+    setIsReserveModalOpen(false);
+    onShowToast({
+      title: "Table Reserved Successfully",
+      message: `Reservation confirmed for ${res.guest_name} on Table #${res.table_number}. Saved to PostgreSQL reservations table.`,
+      code: res.booking_code,
+      type: "success"
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#faf7f2] text-stone-800 font-sans selection:bg-rose-500 selection:text-white">
+      
+      {/* Top Banner Navigation */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onBackToDashboard}
+              className="px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold flex items-center gap-1.5 transition"
+            >
+              <span>← Back to Lab</span>
+            </button>
+            <div className="h-5 w-px bg-stone-300" />
+            <div className="flex items-center space-x-2">
+              <span className="text-xl">🐉</span>
+              <div>
+                <span className="text-base font-bold font-serif tracking-wide text-rose-900 block leading-tight">
+                  DRAGON PEARL
+                </span>
+                <span className="text-[10px] text-stone-500 uppercase tracking-widest block font-sans">
+                  Artisan Cuisine & Cafe
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <nav className="hidden md:flex items-center space-x-6 text-xs font-medium text-stone-600">
+            <a href="#menu" className="hover:text-rose-600 transition">Menu</a>
+            <a href="#about" className="hover:text-rose-600 transition">Our Heritage</a>
+            <a href="#reservation" className="hover:text-rose-600 transition">Reservations</a>
+            <a href="#reviews" className="hover:text-rose-600 transition">Reviews</a>
+            <a href="#contact" className="hover:text-rose-600 transition">Contact & Map</a>
+          </nav>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setIsReserveModalOpen(true)}
+              className="hidden sm:inline-flex px-4 py-2 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold shadow-sm transition"
+            >
+              Book a Table
+            </button>
+
+            {/* Cart Trigger */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition"
+              title="View Order Cart"
+            >
+              <span className="text-sm">🛍️</span>
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-600 text-white font-bold text-[10px] flex items-center justify-center animate-bounce">
+                  {cart.reduce((s, i) => s + i.quantity, 0)}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Showcase Section */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-stone-900 via-rose-950 to-stone-900 text-white py-16 px-6">
+        <div className="absolute inset-0 opacity-25 bg-[radial-gradient(#f43f5e_1px,transparent_1px)] [background-size:20px_20px]" />
+        
+        <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div className="max-w-xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/30 text-rose-300 text-xs font-semibold">
+              <span>✦ Traditional Flavors • Modern Cafe Artistry</span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-extrabold font-serif tracking-tight leading-tight text-amber-100">
+              An Authentic Culinary Odyssey.
+            </h1>
+            <p className="text-stone-300 text-sm leading-relaxed">
+              Experience the harmony of ancient Chinese gastronomic traditions paired with specialty cafe delights. Hand-pulled noodles, artisan dim sum, freshly baked pastries, and signature mocktails crafted daily.
+            </p>
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href="#menu"
+                className="px-6 py-3 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-950 transition"
+              >
+                Explore Full Menu
+              </a>
+              <button
+                onClick={() => setIsReserveModalOpen(true)}
+                className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-stone-200 border border-white/20 font-semibold text-xs transition"
+              >
+                Reserve Your Table
+              </button>
+            </div>
+          </div>
+
+          {/* Hero Dish Visual Grid */}
+          <div className="grid grid-cols-2 gap-3 w-full md:w-96">
+            <div className="rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30">
+              <img
+                src="/assets/dish_pastry.png"
+                alt="Chocolate Pastry"
+                className="w-full h-36 object-cover hover:scale-105 transition duration-300"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30 mt-4">
+              <img
+                src="/assets/dish_coffee.png"
+                alt="Hot Coffee"
+                className="w-full h-36 object-cover hover:scale-105 transition duration-300"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30">
+              <img
+                src="/assets/dish_mocktail.png"
+                alt="Fresh Mocktail"
+                className="w-full h-36 object-cover hover:scale-105 transition duration-300"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30 mt-4">
+              <img
+                src="/assets/dish_maggi.png"
+                alt="Cheese Maggi"
+                className="w-full h-36 object-cover hover:scale-105 transition duration-300"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Menu Filter & Search Section */}
+      <section id="menu" className="max-w-7xl mx-auto px-6 py-12 space-y-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-stone-200 pb-6">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest text-rose-600">
+              Culinary Selections
+            </span>
+            <h2 className="text-3xl font-bold font-serif text-stone-900 mt-1">
+              Featured Cafe & Restaurant Menu
+            </h2>
+            <p className="text-xs text-stone-500 mt-1">
+              Prepared fresh to order using authentic heritage ingredients.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            {/* Search Input */}
+            <div className="relative w-full sm:w-64">
+              <input
+                type="text"
+                placeholder="Search dishes, pastries, drinks..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-8 pr-4 py-2 bg-white border border-stone-300 rounded-full text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:border-rose-600 shadow-sm"
+              />
+              <span className="absolute left-3 top-2.5 text-stone-400 text-xs">🔍</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Category Pills */}
+        <div className="flex flex-wrap gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                activeCategory === cat
+                  ? "bg-rose-600 text-white shadow-md shadow-rose-600/30 font-bold"
+                  : "bg-white hover:bg-stone-100 text-stone-700 border border-stone-200"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Dish Cards Grid — Matches User Reference Image 1 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+          {filteredDishes.map((dish) => (
+            <div
+              key={dish.id}
+              className="bg-white rounded-3xl p-4 shadow-sm hover:shadow-xl border border-stone-100 transition-all duration-300 flex flex-col justify-between group"
+            >
+              <div>
+                {/* Dish Photo */}
+                <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-stone-100 mb-4">
+                  <img
+                    src={dish.image_url}
+                    alt={dish.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                  {dish.is_chef_special && (
+                    <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white shadow-sm">
+                      Chef Special
+                    </span>
+                  )}
+                  <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/90 text-stone-800 backdrop-blur-sm shadow-sm">
+                    ⭐ {dish.rating}
+                  </div>
+                </div>
+
+                {/* Dish Details */}
+                <h3 className="text-base font-bold text-stone-900 leading-snug">
+                  {dish.name}
+                </h3>
+                <p className="text-xs text-stone-500 mt-1.5 leading-relaxed line-clamp-2">
+                  {dish.description}
+                </p>
+              </div>
+
+              {/* Price and Order Now Button (Exact styling from user image 1) */}
+              <div className="pt-4 mt-2 border-t border-stone-100 flex flex-col items-center gap-2">
+                <div className="text-lg font-bold text-rose-600 font-sans">
+                  ₹{dish.price}
+                </div>
+                <button
+                  onClick={() => addToCart(dish)}
+                  className="w-full py-2.5 rounded-full bg-[#e11d48] hover:bg-[#be123c] text-white font-bold text-xs shadow-md shadow-rose-500/20 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>Order Now</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Reservation & Heritage Section */}
+      <section id="reservation" className="bg-stone-900 text-stone-100 py-16 px-6 mt-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div className="space-y-5">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+              Fine Dining & Private Dining
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-white">
+              Reserve Your Table at Dragon Pearl
+            </h2>
+            <p className="text-stone-300 text-sm leading-relaxed">
+              Whether celebrating a milestone or enjoying an intimate artisan cafe afternoon, our hosts guarantee an unforgettable dining experience. Every reservation includes dedicated concierge table placement.
+            </p>
+
+            <div className="space-y-3 pt-2 text-xs font-mono text-stone-400">
+              <div className="flex items-center gap-3">
+                <span className="text-amber-400 text-base">📍</span>
+                <span>Wardha Road, Near SVPCET Campus, Nagpur, Maharashtra</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-amber-400 text-base">🕒</span>
+                <span>Lunch: 12:00 PM – 3:30 PM | Dinner: 7:00 PM – 11:30 PM</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-amber-400 text-base">📞</span>
+                <span>Reservations Hotline: +91 92269 25656</span>
+              </div>
+            </div>
+
+            {confirmedReservation && (
+              <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs">
+                <div className="font-bold text-sm mb-1">✓ Reservation Confirmed!</div>
+                <div>Guest: <strong>{confirmedReservation.guest_name}</strong> • Party of {confirmedReservation.party_size}</div>
+                <div>Date & Time: {confirmedReservation.reservation_date} at {confirmedReservation.reservation_time}</div>
+                <div>Assigned Table: <strong>Table #{confirmedReservation.table_number}</strong></div>
+                <div className="mt-1 font-mono text-[10px] text-emerald-400">
+                  PostgreSQL Booking Reference: {confirmedReservation.booking_code}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Inline Reservation Form */}
+          <div className="bg-stone-800/90 border border-stone-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md">
+            <h3 className="text-xl font-bold font-serif text-white mb-4">
+              Instant Table Booking
+            </h3>
+            
+            <form onSubmit={handleReservationSubmit} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-stone-300 font-semibold mb-1">Guest Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={resForm.guestName}
+                    onChange={(e) => setResForm({ ...resForm, guestName: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-stone-100 focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-stone-300 font-semibold mb-1">Contact Phone *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={resForm.phone}
+                    onChange={(e) => setResForm({ ...resForm, phone: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-stone-100 focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-stone-300 font-semibold mb-1">Party Size *</label>
+                  <select
+                    value={resForm.partySize}
+                    onChange={(e) => setResForm({ ...resForm, partySize: Number(e.target.value) })}
+                    className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-stone-100 focus:outline-none focus:border-amber-400"
+                  >
+                    {[1, 2, 3, 4, 5, 6, 8, 10].map((n) => (
+                      <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-stone-300 font-semibold mb-1">Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={resForm.date}
+                    onChange={(e) => setResForm({ ...resForm, date: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-stone-100 focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-stone-300 font-semibold mb-1">Time Slot *</label>
+                  <select
+                    value={resForm.time}
+                    onChange={(e) => setResForm({ ...resForm, time: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-stone-100 focus:outline-none focus:border-amber-400"
+                  >
+                    <option value="12:30">12:30 PM (Lunch)</option>
+                    <option value="13:30">01:30 PM (Lunch)</option>
+                    <option value="19:30">07:30 PM (Dinner)</option>
+                    <option value="20:30">08:30 PM (Dinner)</option>
+                    <option value="21:30">09:30 PM (Dinner)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-stone-300 font-semibold mb-1">Special Dining Requests</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Birthday anniversary, high chair, terrace seating..."
+                  value={resForm.specialRequests}
+                  onChange={(e) => setResForm({ ...resForm, specialRequests: e.target.value })}
+                  className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-stone-100 focus:outline-none focus:border-amber-400"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-stone-950 font-bold text-xs uppercase tracking-wider shadow-lg transition"
+              >
+                Confirm Table Reservation (PostgreSQL)
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Floating Scroll To Top Button (matching user image 1 red circular arrow) */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 right-6 z-30 w-11 h-11 rounded-full bg-[#dc2626] hover:bg-[#b91c1c] text-white flex items-center justify-center shadow-xl shadow-rose-900/40 text-lg transition-all transform hover:scale-110"
+        title="Scroll to Top"
+      >
+        ↑
+      </button>
+
+      {/* Slide-out Order Cart Drawer */}
+      {isCartOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between animate-slideLeft">
+            
+            <div className="p-6 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+              <div className="flex items-center space-x-2">
+                <span className="text-xl">🛍️</span>
+                <h3 className="text-base font-bold text-stone-900">Your Dining Order</h3>
+              </div>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="w-8 h-8 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center hover:bg-stone-300"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {cart.length === 0 ? (
+                <div className="text-center py-12 text-stone-400 text-sm">
+                  Your cart is empty. Add your favorite dishes from the menu!
+                </div>
+              ) : (
+                cart.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between p-3 rounded-2xl border border-stone-200 bg-stone-50/50">
+                    <img src={item.image_url} alt={item.name} className="w-14 h-14 rounded-xl object-cover" />
+                    <div className="flex-1 px-3">
+                      <div className="text-xs font-bold text-stone-900">{item.name}</div>
+                      <div className="text-xs text-rose-600 font-semibold">₹{item.price} each</div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => updateCartQty(item.id, -1)}
+                        className="w-6 h-6 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-bold"
+                      >
+                        -
+                      </button>
+                      <span className="text-xs font-bold text-stone-800">{item.quantity}</span>
+                      <button
+                        onClick={() => updateCartQty(item.id, 1)}
+                        className="w-6 h-6 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-bold"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {cart.length > 0 && (
+              <div className="p-6 border-t border-stone-200 bg-stone-50 space-y-3 text-xs">
+                <div className="flex justify-between text-stone-600">
+                  <span>Subtotal</span>
+                  <span>₹{cartSubtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-stone-600">
+                  <span>GST (5%)</span>
+                  <span>₹{gst.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-stone-600">
+                  <span>Delivery Charge</span>
+                  <span>₹{deliveryFee.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t border-stone-200">
+                  <span>Grand Total</span>
+                  <span className="text-rose-600 text-base">₹{cartTotal.toFixed(2)}</span>
+                </div>
+                <button
+                  onClick={handlePlaceOrder}
+                  className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-rose-600/30 transition mt-2"
+                >
+                  Checkout & Place Order (Save to DB)
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
+      {/* Reservation Modal Popup (for Book a Table in top nav) */}
+      {isReserveModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative">
+            <button
+              onClick={() => setIsReserveModalOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center"
+            >
+              ✕
+            </button>
+            <h3 className="text-xl font-bold font-serif text-stone-900 mb-1">
+              Table Reservation Concierge
+            </h3>
+            <p className="text-xs text-stone-500 mb-4">
+              Enter your party details below. Your reservation will be registered in the PostgreSQL database.
+            </p>
+            <form onSubmit={handleReservationSubmit} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block text-stone-700 font-semibold mb-1">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={resForm.guestName}
+                  onChange={(e) => setResForm({ ...resForm, guestName: e.target.value })}
+                  className="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-stone-800"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={resForm.email}
+                    onChange={(e) => setResForm({ ...resForm, email: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-stone-800"
+                  />
+                </div>
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">Phone Number *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={resForm.phone}
+                    onChange={(e) => setResForm({ ...resForm, phone: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-stone-800"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">Party Size *</label>
+                  <select
+                    value={resForm.partySize}
+                    onChange={(e) => setResForm({ ...resForm, partySize: Number(e.target.value) })}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-stone-800"
+                  >
+                    {[1, 2, 4, 6, 8, 10].map((n) => (
+                      <option key={n} value={n}>{n} Guests</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={resForm.date}
+                    onChange={(e) => setResForm({ ...resForm, date: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-stone-800"
+                  />
+                </div>
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">Time *</label>
+                  <input
+                    type="time"
+                    required
+                    value={resForm.time}
+                    onChange={(e) => setResForm({ ...resForm, time: e.target.value })}
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-stone-800"
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md mt-2"
+              >
+                Confirm Reservation
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Order Confirmed Modal */}
+      {confirmedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-2xl">
+              ✓
+            </div>
+            <h3 className="text-xl font-bold font-serif text-stone-900">
+              Order Confirmed & Sent to Kitchen!
+            </h3>
+            <p className="text-xs text-stone-600">
+              Thank you, <strong>{confirmedOrder.customer_name}</strong>. Your order is being prepared by our executive chefs.
+            </p>
+            <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 text-left space-y-2 text-xs font-mono">
+              <div className="flex justify-between">
+                <span>Order Reference:</span>
+                <span className="font-bold text-rose-600">{confirmedOrder.order_code}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Total Amount:</span>
+                <span className="font-bold text-stone-900">₹{confirmedOrder.total.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Payment Method:</span>
+                <span>{confirmedOrder.payment_method}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Database Sync:</span>
+                <span className="text-emerald-600 font-bold">restaurant_orders (PostgreSQL)</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setConfirmedOrder(null)}
+              className="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs"
+            >
+              Continue Exploring Menu
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-stone-950 text-stone-400 py-12 px-6 border-t border-stone-800 text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl">🐉</span>
+            <div>
+              <div className="font-bold font-serif text-stone-200 text-sm">DRAGON PEARL & CAFE</div>
+              <div className="text-[10px] text-stone-500">NEXUS STUDIO • Web Engineering Practical 01</div>
+            </div>
+          </div>
+          <div className="text-center md:text-right text-[11px] text-stone-500">
+            <div>Demonstrating CSS Grid, Flexbox, Responsive Breakpoints & PostgreSQL Orders.</div>
+            <div>Evaluated by St. Vincent Pallotti College of Engineering & Technology, Nagpur.</div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\chronolux\ChronoLuxView.jsx ---
+// Project 2 — ChronoLux / ChronoVault: Luxury Watch E-Commerce Catalog
+
+
+
+function ChronoLuxView({ onBackToDashboard, onShowToast }) {
+  const [products, setProducts] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("All");
+  const [sortBy, setSortBy] = useState("featured");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [viewProduct, setViewProduct] = useState(null);
+  const [placedOrder, setPlacedOrder] = useState(null);
+
+  // Customer shipping details
+  const [checkoutForm, setCheckoutForm] = useState({
+    name: "Harshada Dinesh Lonare",
+    email: "harshadalonare15@gmail.com",
+    address: "St. Vincent Pallotti College of Engg, Wardha Road",
+    city: "Nagpur",
+    state: "Maharashtra",
+    postalCode: "441108"
+  });
+
+  useEffect(() => {
+    const loadData = () => {
+      setProducts(db.getTable("products"));
+      setWishlist(db.getTable("wishlists"));
+    };
+    loadData();
+    return db.subscribe(loadData);
+  }, []);
+
+  const brands = ["All", "Rolex", "Omega", "Patek Philippe", "Cartier", "Audemars Piguet", "TAG Heuer"];
+
+  const filteredProducts = products
+    .filter((p) => {
+      const matchesBrand = selectedBrand === "All" || p.brand.toLowerCase() === selectedBrand.toLowerCase();
+      const matchesSearch =
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.collection.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.brand.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesBrand && matchesSearch;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      if (sortBy === "name") return a.name.localeCompare(b.name);
+      return b.featured ? 1 : -1;
+    });
+
+  const toggleWishlist = (productId) => {
+    const res = db.toggleWishlist("harshadalonare.24@stvincentngp.edu.in", productId);
+    onShowToast({
+      title: res.inWishlist ? "Saved to Wishlist" : "Removed from Wishlist",
+      message: res.inWishlist
+        ? "Timepiece saved to your private horology wishlist (PostgreSQL)."
+        : "Timepiece removed from wishlist.",
+      type: "success"
+    });
+  };
+
+  const isItemInWishlist = (productId) => {
+    return wishlist.some((w) => w.product_id === productId);
+  };
+
+  const addToCart = (product) => {
+    setCart((prev) => {
+      const exists = prev.find((item) => item.id === product.id);
+      if (exists) {
+        return prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+    onShowToast({
+      title: "Added to Shopping Bag",
+      message: `${product.name} has been placed in your acquisition cart.`,
+      type: "success"
+    });
+  };
+
+  const updateQuantity = (id, delta) => {
+    setCart((prev) => {
+      return prev
+        .map((item) => {
+          if (item.id === id) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        })
+        .filter(Boolean);
+    });
+  };
+
+  const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const luxuryTax = cartSubtotal * 0.03; // 3% GST on luxury goods
+  const insuredShipping = cartSubtotal > 0 ? 0 : 0; // Complimentary VIP Armored Delivery
+  const cartTotal = cartSubtotal + luxuryTax + insuredShipping;
+
+  const handleCheckoutSubmit = (e) => {
+    e.preventDefault();
+    if (cart.length === 0) return;
+    const order = db.createWatchOrder({
+      customerName: checkoutForm.name,
+      email: checkoutForm.email,
+      address: checkoutForm.address,
+      city: checkoutForm.city,
+      state: checkoutForm.state,
+      postalCode: checkoutForm.postalCode,
+      totalAmount: cartTotal,
+      items: cart
+    });
+    setPlacedOrder(order);
+    setCart([]);
+    setIsCheckoutOpen(false);
+    onShowToast({
+      title: "Timepiece Order Reserved & Logged",
+      message: `Your acquisition order #${order.order_number} has been recorded in the PostgreSQL orders table.`,
+      code: order.order_number,
+      type: "success"
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#11100f] text-[#f5f2eb] font-sans selection:bg-[#d4af37] selection:text-black">
+      
+      {/* Top Luxury Navbar — Matches User Images 2 & 3 */}
+      <header className="sticky top-0 z-40 bg-[#161413]/95 backdrop-blur-md border-b border-[#2d2824] px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={onBackToDashboard}
+              className="px-3 py-1.5 rounded-lg bg-[#24201c] hover:bg-[#332e29] text-[#c5a059] text-xs font-semibold flex items-center gap-1.5 transition border border-[#3d362e]"
+            >
+              <span>← Back to Lab</span>
+            </button>
+            <div className="h-5 w-px bg-[#3d362e]" />
+            <div className="flex items-center space-x-2.5">
+              <span className="text-xl text-[#d4af37]">⏱</span>
+              <div>
+                <span className="text-lg font-bold font-serif tracking-wider text-[#e6ca85] block leading-tight">
+                  ChronoVault
+                </span>
+                <span className="text-[9px] uppercase tracking-widest text-[#8c8273] block">
+                  Haute Horlogerie Geneva
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <nav className="hidden lg:flex items-center space-x-8 text-xs font-medium tracking-wide text-[#b8afa0]">
+            <a href="#catalog" className="hover:text-[#d4af37] transition">Home</a>
+            <a href="#catalog" className="hover:text-[#d4af37] transition">Collection</a>
+            <a href="#heritage" className="hover:text-[#d4af37] transition">Heritage</a>
+            <a href="#reviews" className="hover:text-[#d4af37] transition">Reviews</a>
+            <a href="#contact" className="hover:text-[#d4af37] transition">Contact</a>
+          </nav>
+
+          <div className="flex items-center space-x-4">
+            {/* Wishlist Trigger */}
+            <button
+              onClick={() => setIsWishlistOpen(true)}
+              className="relative p-2 rounded-full hover:bg-[#25211d] text-[#b8afa0] hover:text-[#d4af37] transition"
+              title="View Private Wishlist"
+            >
+              <span className="text-base">🤍</span>
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#d4af37] text-black font-bold text-[9px] flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </button>
+
+            {/* Shopping Bag Trigger */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 rounded-full hover:bg-[#25211d] text-[#b8afa0] hover:text-[#d4af37] transition"
+              title="View Cart"
+            >
+              <span className="text-base">🛒</span>
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#d4af37] text-black font-bold text-[9px] flex items-center justify-center">
+                  {cart.reduce((s, i) => s + i.quantity, 0)}
+                </span>
+              )}
+            </button>
+          </div>
+
+        </div>
+      </header>
+
+      {/* Hero Horology Banner */}
+      <section className="relative py-20 px-6 overflow-hidden bg-gradient-to-b from-[#181513] via-[#121110] to-[#11100f] border-b border-[#24201c]">
+        <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:28px_28px]" />
+        
+        <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div className="max-w-xl space-y-4">
+            <span className="text-[11px] font-mono tracking-widest uppercase text-[#c5a059] block">
+              Swiss Mastery • Timeless Precision
+            </span>
+            <h1 className="text-4xl sm:text-5xl font-extrabold font-serif tracking-tight text-[#f3e7c4] leading-tight">
+              Curated Luxury Timepieces for Connoisseurs.
+            </h1>
+            <p className="text-[#a69c8d] text-sm leading-relaxed">
+              Explore vintage and modern horological references from Geneva, Le Brassus, and Biel. Every timepiece is verified for authentic mechanical provenance and certified with our international horology registry.
+            </p>
+            <div className="flex items-center gap-4 pt-2">
+              <a
+                href="#catalog"
+                className="px-6 py-3 rounded-full bg-gradient-to-r from-[#d4af37] to-[#b38e2d] hover:from-[#e6ca85] hover:to-[#c5a059] text-black font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#d4af37]/20 transition"
+              >
+                Explore Catalog
+              </a>
+              <span className="text-xs text-[#8c8273]">
+                ✦ Complimentary Armored Express Shipping
+              </span>
+            </div>
+          </div>
+
+          {/* Featured Hero Watch Card */}
+          <div className="p-6 rounded-3xl bg-[#1c1815] border border-[#3b342b] shadow-2xl flex flex-col items-center text-center max-w-xs w-full">
+            <img
+              src="assets/watch_rolex.png.png"
+              alt="Rolex Submariner"
+              className="h-48 object-contain hover:scale-110 transition duration-500 mb-3"
+            />
+            <span className="text-[10px] uppercase tracking-widest text-[#c5a059] font-mono">
+              Reference Benchmark
+            </span>
+            <h3 className="text-lg font-bold font-serif text-[#f3e7c4]">
+              Rolex Submariner
+            </h3>
+            <div className="text-base font-bold text-[#d4af37] mt-1">
+              ₹7,99,999
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Catalog Grid Section — Matches User Images 2 & 3 */}
+      <section id="catalog" className="max-w-7xl mx-auto px-6 py-12 space-y-8">
+        
+        {/* Filter and Sorting Controls */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#26211c] pb-6">
+          <div className="flex flex-wrap gap-2">
+            {brands.map((b) => (
+              <button
+                key={b}
+                onClick={() => setSelectedBrand(b)}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  selectedBrand === b
+                    ? "bg-[#d4af37] text-black font-bold shadow-md shadow-[#d4af37]/20"
+                    : "bg-[#1d1916] hover:bg-[#28231f] text-[#b8afa0] border border-[#2d2824]"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Search Input */}
+            <input
+              type="text"
+              placeholder="Search reference, calibre..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-3 py-1.5 bg-[#1a1714] border border-[#332c25] rounded-lg text-xs text-[#f5f2eb] placeholder-[#736a5c] focus:outline-none focus:border-[#d4af37]"
+            />
+
+            {/* Sort Dropdown */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-1.5 bg-[#1a1714] border border-[#332c25] rounded-lg text-xs text-[#c5a059] focus:outline-none focus:border-[#d4af37]"
+            >
+              <option value="featured">Featured First</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Watch Product Cards Grid — EXACT LAYOUT FROM USER REFERENCE IMAGES 2 & 3 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredProducts.map((watch) => {
+            const inWishlist = isItemInWishlist(watch.id);
+            return (
+              <div
+                key={watch.id}
+                className="bg-[#1c1815] rounded-2xl p-4 border border-[#2e2821] hover:border-[#524637] transition-all duration-300 flex flex-col justify-between group shadow-xl"
+              >
+                <div>
+                  {/* Image Container with Wishlist Heart */}
+                  <div className="relative h-56 w-full rounded-xl overflow-hidden bg-[#13110f] mb-4 flex items-center justify-center">
+                    <img
+                      src={watch.image_url}
+                      alt={watch.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer"
+                      onClick={() => setViewProduct(watch)}
+                    />
+                    
+                    {/* Wishlist Heart Icon (Top Right) */}
+                    <button
+                      onClick={() => toggleWishlist(watch.id)}
+                      className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition backdrop-blur-md ${
+                        inWishlist
+                          ? "bg-rose-950/80 text-rose-500 border border-rose-500/50"
+                          : "bg-black/50 text-[#8c8273] hover:text-white border border-white/10"
+                      }`}
+                      title={inWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
+                    >
+                      {inWishlist ? "❤️" : "🤍"}
+                    </button>
+                  </div>
+
+                  {/* Watch Name in Gold Serif */}
+                  <h3
+                    onClick={() => setViewProduct(watch)}
+                    className="text-base font-bold font-serif text-[#e6ca85] hover:text-[#f3e7c4] cursor-pointer transition leading-snug"
+                  >
+                    {watch.name}
+                  </h3>
+
+                  {/* Collection Subtitle */}
+                  <p className="text-xs text-[#8c8273] font-sans mt-1">
+                    {watch.collection}
+                  </p>
+
+                  {/* Price in Indian Rupees */}
+                  <div className="text-lg font-bold text-[#f5f2eb] font-sans mt-3">
+                    ₹{watch.price.toLocaleString("en-IN")}
+                  </div>
+                </div>
+
+                {/* Rounded Gold "Add To Cart" Button (Exact button styling from user images 2 & 3) */}
+                <div className="pt-4 mt-2">
+                  <button
+                    onClick={() => addToCart(watch)}
+                    className="w-full py-2.5 rounded-xl bg-[#8c734b] hover:bg-[#a68958] active:bg-[#735e3c] text-[#11100f] font-bold text-xs font-sans tracking-wide transition-all shadow-md flex items-center justify-center gap-1.5"
+                  >
+                    <span>Add To Cart</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Floating Scroll To Top Button (matching user image 2 & 3 gold circle) */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 right-6 z-30 w-11 h-11 rounded-full bg-[#c5a059] hover:bg-[#d4af37] text-black font-bold flex items-center justify-center shadow-2xl text-lg transition-all transform hover:scale-110"
+        title="Scroll to Top"
+      >
+        ↑
+      </button>
+
+      {/* Watch Quick View Modal */}
+      {viewProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative bg-[#1a1714] border border-[#3b3329] rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl text-[#f5f2eb]">
+            <button
+              onClick={() => setViewProduct(null)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#29231d] text-[#a69c8d] hover:text-white flex items-center justify-center"
+            >
+              ✕
+            </button>
+            <div className="flex flex-col md:flex-row gap-6 items-center">
+              <div className="w-full md:w-1/2 h-64 rounded-2xl overflow-hidden bg-[#13110f] flex items-center justify-center p-2">
+                <img
+                  src={viewProduct.image_url}
+                  alt={viewProduct.name}
+                  className="max-h-full object-contain"
+                />
+              </div>
+              <div className="w-full md:w-1/2 space-y-3">
+                <span className="text-[10px] uppercase font-mono tracking-widest text-[#c5a059]">
+                  {viewProduct.brand} • {viewProduct.collection}
+                </span>
+                <h3 className="text-xl font-bold font-serif text-[#f3e7c4]">
+                  {viewProduct.name}
+                </h3>
+                <div className="text-xl font-bold text-[#d4af37]">
+                  ₹{viewProduct.price.toLocaleString("en-IN")}
+                </div>
+                <p className="text-xs text-[#a69c8d] leading-relaxed">
+                  {viewProduct.description}
+                </p>
+                <div className="pt-2 border-t border-[#2e2720] space-y-1 text-[11px] font-mono text-[#8c8273]">
+                  <div>Case: <span className="text-[#c5a059]">{viewProduct.case_size}</span></div>
+                  <div>Calibre: <span className="text-[#c5a059]">{viewProduct.movement_type}</span></div>
+                  <div>Water Resistance: <span className="text-[#c5a059]">{viewProduct.water_resistance}</span></div>
+                </div>
+                <button
+                  onClick={() => {
+                    addToCart(viewProduct);
+                    setViewProduct(null);
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-[#c5a059] hover:bg-[#d4af37] text-black font-bold text-xs uppercase tracking-wider transition"
+                >
+                  Add To Acquisition Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Slide-out Shopping Bag Drawer */}
+      {isCartOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-[#181512] border-l border-[#2e2720] h-full shadow-2xl flex flex-col justify-between animate-slideLeft">
+            
+            <div className="p-6 border-b border-[#2e2720] flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xl">🛒</span>
+                <h3 className="text-base font-bold font-serif text-[#f3e7c4]">
+                  Acquisition Bag ({cart.length})
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsCartOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#26211c] text-[#8c8273] hover:text-white flex items-center justify-center"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {cart.length === 0 ? (
+                <div className="text-center py-16 text-[#736a5c] text-xs">
+                  Your acquisition bag is empty. Explore our haute horlogerie catalog.
+                </div>
+              ) : (
+                cart.map((item) => (
+                  <div key={item.id} className="p-3.5 rounded-xl bg-[#201c18] border border-[#2e2720] flex items-center justify-between">
+                    <img src={item.image_url} alt={item.name} className="w-14 h-14 object-cover rounded-lg" />
+                    <div className="flex-1 px-3">
+                      <div className="text-xs font-bold text-[#f3e7c4] truncate">{item.name}</div>
+                      <div className="text-xs text-[#c5a059]">₹{item.price.toLocaleString("en-IN")}</div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => updateQuantity(item.id, -1)}
+                        className="w-6 h-6 rounded bg-[#2a241f] text-[#c5a059] text-xs font-bold"
+                      >
+                        -
+                      </button>
+                      <span className="text-xs font-bold text-white">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.id, 1)}
+                        className="w-6 h-6 rounded bg-[#2a241f] text-[#c5a059] text-xs font-bold"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {cart.length > 0 && (
+              <div className="p-6 border-t border-[#2e2720] bg-[#14120f] space-y-2.5 text-xs">
+                <div className="flex justify-between text-[#8c8273]">
+                  <span>Subtotal</span>
+                  <span className="text-[#f5f2eb]">₹{cartSubtotal.toLocaleString("en-IN")}</span>
+                </div>
+                <div className="flex justify-between text-[#8c8273]">
+                  <span>GST & Luxury Customs (3%)</span>
+                  <span className="text-[#f5f2eb]">₹{luxuryTax.toLocaleString("en-IN")}</span>
+                </div>
+                <div className="flex justify-between text-[#8c8273]">
+                  <span>Armored Insured Delivery</span>
+                  <span className="text-emerald-400 font-mono">COMPLIMENTARY</span>
+                </div>
+                <div className="flex justify-between text-sm font-bold text-[#f3e7c4] pt-2 border-t border-[#2e2720]">
+                  <span>Acquisition Total</span>
+                  <span className="text-[#d4af37] text-base">₹{cartTotal.toLocaleString("en-IN")}</span>
+                </div>
+                <button
+                  onClick={() => {
+                    setIsCartOpen(false);
+                    setIsCheckoutOpen(true);
+                  }}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b38e2d] hover:from-[#e6ca85] hover:to-[#c5a059] text-black font-bold text-xs uppercase tracking-wider transition mt-2 shadow-lg"
+                >
+                  Proceed to VIP Checkout
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
+      {/* Wishlist Drawer */}
+      {isWishlistOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md bg-[#181512] border-l border-[#2e2720] h-full shadow-2xl flex flex-col justify-between animate-slideLeft">
+            <div className="p-6 border-b border-[#2e2720] flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xl">🤍</span>
+                <h3 className="text-base font-bold font-serif text-[#f3e7c4]">
+                  Private Horology Wishlist ({wishlist.length})
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsWishlistOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#26211c] text-[#8c8273] hover:text-white flex items-center justify-center"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {wishlist.length === 0 ? (
+                <div className="text-center py-16 text-[#736a5c] text-xs">
+                  Your private wishlist is empty. Tap the heart icon on any timepiece to save it.
+                </div>
+              ) : (
+                wishlist.map((w) => {
+                  const watch = products.find((p) => p.id === w.product_id);
+                  if (!watch) return null;
+                  return (
+                    <div key={w.id} className="p-3.5 rounded-xl bg-[#201c18] border border-[#2e2720] flex items-center justify-between">
+                      <img src={watch.image_url} alt={watch.name} className="w-14 h-14 object-cover rounded-lg" />
+                      <div className="flex-1 px-3">
+                        <div className="text-xs font-bold text-[#f3e7c4]">{watch.name}</div>
+                        <div className="text-xs text-[#c5a059]">₹{watch.price.toLocaleString("en-IN")}</div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          addToCart(watch);
+                          toggleWishlist(watch.id);
+                        }}
+                        className="px-2.5 py-1 rounded bg-[#c5a059] text-black text-[10px] font-bold"
+                      >
+                        Acquire
+                      </button>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            <div className="p-6 border-t border-[#2e2720] text-center text-xs text-[#8c8273]">
+              Wishlist synchronized with PostgreSQL <span className="font-mono text-[#c5a059]">wishlists</span> table.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Checkout Modal */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative bg-[#1a1714] border border-[#3b3329] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl text-[#f5f2eb]">
+            <button
+              onClick={() => setIsCheckoutOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#29231d] text-[#8c8273] hover:text-white flex items-center justify-center"
+            >
+              ✕
+            </button>
+            <h3 className="text-xl font-bold font-serif text-[#f3e7c4] mb-1">
+              Haute Horlogerie Acquisition Checkout
+            </h3>
+            <p className="text-xs text-[#8c8273] mb-4">
+              Enter your recipient credentials for insured courier dispatch.
+            </p>
+            <form onSubmit={handleCheckoutSubmit} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block text-[#a69c8d] font-semibold mb-1">Full Recipient Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={checkoutForm.name}
+                  onChange={(e) => setCheckoutForm({ ...checkoutForm, name: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#12100e] border border-[#332c25] rounded-xl text-[#f5f2eb]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#a69c8d] font-semibold mb-1">Email Address for Registry *</label>
+                <input
+                  type="email"
+                  required
+                  value={checkoutForm.email}
+                  onChange={(e) => setCheckoutForm({ ...checkoutForm, email: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#12100e] border border-[#332c25] rounded-xl text-[#f5f2eb]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#a69c8d] font-semibold mb-1">Shipping Address *</label>
+                <input
+                  type="text"
+                  required
+                  value={checkoutForm.address}
+                  onChange={(e) => setCheckoutForm({ ...checkoutForm, address: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#12100e] border border-[#332c25] rounded-xl text-[#f5f2eb]"
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-2.5">
+                <div>
+                  <label className="block text-[#a69c8d] font-semibold mb-1">City *</label>
+                  <input
+                    type="text"
+                    required
+                    value={checkoutForm.city}
+                    onChange={(e) => setCheckoutForm({ ...checkoutForm, city: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#12100e] border border-[#332c25] rounded-xl text-[#f5f2eb]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#a69c8d] font-semibold mb-1">State *</label>
+                  <input
+                    type="text"
+                    required
+                    value={checkoutForm.state}
+                    onChange={(e) => setCheckoutForm({ ...checkoutForm, state: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#12100e] border border-[#332c25] rounded-xl text-[#f5f2eb]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#a69c8d] font-semibold mb-1">Postal Code *</label>
+                  <input
+                    type="text"
+                    required
+                    value={checkoutForm.postalCode}
+                    onChange={(e) => setCheckoutForm({ ...checkoutForm, postalCode: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#12100e] border border-[#332c25] rounded-xl text-[#f5f2eb]"
+                  />
+                </div>
+              </div>
+              <div className="p-3 rounded-xl bg-[#241f1a] border border-[#3b3329] text-[11px] font-mono text-[#c5a059] flex justify-between">
+                <span>Total Due:</span>
+                <span className="font-bold">₹{cartTotal.toLocaleString("en-IN")}</span>
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#b38e2d] text-black font-bold text-xs uppercase tracking-wider shadow-lg"
+              >
+                Place Acquisition Order (Save to DB)
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Order Placed Success Modal */}
+      {placedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative bg-[#1a1714] border border-[#3b3329] rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#3b3329] text-[#d4af37] flex items-center justify-center mx-auto text-2xl">
+              ✓
+            </div>
+            <h3 className="text-xl font-bold font-serif text-[#f3e7c4]">
+              Horological Order Confirmed
+            </h3>
+            <p className="text-xs text-[#a69c8d]">
+              Recipient: <strong>{placedOrder.customer_name}</strong>. Your luxury acquisition has been registered with Geneva dispatch.
+            </p>
+            <div className="p-4 rounded-2xl bg-[#12100e] border border-[#2e2720] text-left space-y-2 text-xs font-mono">
+              <div className="flex justify-between">
+                <span className="text-[#8c8273]">Order Reference:</span>
+                <span className="text-[#d4af37] font-bold">{placedOrder.order_number}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#8c8273]">Total Amount:</span>
+                <span className="text-white">₹{placedOrder.total_amount.toLocaleString("en-IN")}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#8c8273]">Database Storage:</span>
+                <span className="text-emerald-400">orders (PostgreSQL)</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setPlacedOrder(null)}
+              className="w-full py-2.5 rounded-xl bg-[#c5a059] text-black font-bold text-xs"
+            >
+              Back to ChronoVault
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-[#0c0b0a] text-[#736a5c] py-12 px-6 border-t border-[#1f1b17] text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl text-[#d4af37]">⏱</span>
+            <div>
+              <div className="font-bold font-serif text-[#e6ca85] text-sm">ChronoVault / ChronoLux</div>
+              <div className="text-[10px] text-[#8c8273]">NEXUS STUDIO • Web Engineering Practical 02</div>
+            </div>
+          </div>
+          <div className="text-center md:text-right text-[11px] text-[#8c8273]">
+            <div>Demonstrating CSS Grid, Flexbox, Wishlist state & E-Commerce Cart calculations.</div>
+            <div>Integrated with relational PostgreSQL order tracking.</div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\portfolio\HarshadaPortfolioView.jsx ---
+// Project 3 — Harshada's Personal Portfolio: Official Academic & Engineering Portfolio
+
+
+
+
+function HarshadaPortfolioView({ onBackToDashboard, onShowToast, onOpenProject }) {
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    subject: "Inquiry regarding Engineering Internship / Practical Evaluation",
+    message: ""
+  });
+  const [submittedMessage, setSubmittedMessage] = useState(null);
+
+  const skillCategories = [
+    {
+      title: "Programming Languages",
+      skills: ["C", "C++", "Python", "JavaScript"]
+    },
+    {
+      title: "Web Development",
+      skills: ["HTML", "CSS", "JavaScript", "React", "TypeScript", "Node.js", "Firebase"]
+    },
+    {
+      title: "Design & Creative Tools",
+      skills: ["Figma", "Canva", "Blender", "Unity"]
+    },
+    {
+      title: "Development Tools",
+      skills: ["Visual Studio Code", "Git", "GitHub", "Android Studio", "Unity Hub"]
+    }
+  ];
+
+  const practicalProjects = [
+    {
+      id: "agriconnect",
+      title: "AgriConnect — Smart Agriculture Platform",
+      category: "Full Stack",
+      tags: ["React", "JavaScript", "Firebase"],
+      description: "A platform designed to help farmers access market prices, direct selling, transport booking, weather forecasting, fertilizer information, crop recommendations, and a farmer community.",
+      linkText: "View Case Study"
+    },
+    {
+      id: "citizen",
+      title: "Smart Citizen Reporting System",
+      category: "Web Applications",
+      tags: ["HTML", "Web Technologies", "Geolocation"],
+      description: "A system that allows citizens to report civic problems directly with photo reporting, single-click reporting, geolocation, HTML-based analysis, and status tracking.",
+      linkText: "Explore System"
+    },
+    {
+      id: "health3d",
+      title: "3D Health Awareness AI Bot",
+      category: "3D & AI",
+      tags: ["Blender", "Unity", "C#"],
+      description: "An interactive health awareness project combining AI with 3D visualization, featuring 3D organ visualization, AI voice interaction, a family 3D avatar, multilingual interaction, and health/lifestyle awareness.",
+      linkText: "View 3D Demo"
+    },
+    {
+      id: "nexus",
+      title: "NEXUS STUDIO — Six Project Platform",
+      category: "Frontend & Full Stack",
+      tags: ["React", "CSS Grid", "PostgreSQL", "Animations"],
+      description: "Unified web development engineering platform integrating six academic practicals into one seamless, responsive architecture with relational database persistence.",
+      linkText: "Active Platform"
+    }
+  ];
+
+  const areasOfInterest = [
+    { name: "UI/UX Design", icon: "🎨" },
+    { name: "3D Modeling", icon: "🧊" },
+    { name: "Game Development", icon: "🎮" },
+    { name: "Artificial Intelligence", icon: "🧠" },
+    { name: "Application Development", icon: "📱" }
+  ];
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.email || !contactForm.message) {
+      alert("Please fill in your name, email, and message.");
+      return;
+    }
+    const msg = db.submitContactMessage({
+      senderName: contactForm.name,
+      email: contactForm.email,
+      subject: contactForm.subject,
+      message: contactForm.message
+    });
+    setSubmittedMessage(msg);
+    setContactForm({ name: "", email: "", subject: "", message: "" });
+    onShowToast({
+      title: "Message Sent Successfully",
+      message: "Your message has been delivered to Harshada and saved to the PostgreSQL contact_messages table.",
+      type: "success"
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#121316] text-[#e2e4e9] font-sans selection:bg-purple-500 selection:text-white">
+      
+      {/* Portfolio Header Bar */}
+      <header className="sticky top-0 z-40 bg-[#121316]/95 backdrop-blur-md border-b border-[#23262d] px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onBackToDashboard}
+              className="px-3 py-1.5 rounded-lg bg-[#1e2129] hover:bg-[#2b303c] text-purple-300 text-xs font-semibold flex items-center gap-1.5 transition border border-[#2d323f]"
+            >
+              <span>← Back to Lab</span>
+            </button>
+            <div className="h-5 w-px bg-[#2d323f]" />
+            <span className="text-sm font-bold tracking-tight text-white font-mono">
+              Harshada Dinesh Lonare
+            </span>
+          </div>
+
+          <nav className="hidden md:flex items-center space-x-6 text-xs font-medium text-[#9da3af]">
+            <a href="#about" className="hover:text-purple-400 transition">About</a>
+            <a href="#skills" className="hover:text-purple-400 transition">Skills</a>
+            <a href="#projects" className="hover:text-purple-400 transition">Projects</a>
+            <a href="#interests" className="hover:text-purple-400 transition">Interests</a>
+            <a href="#contact" className="hover:text-purple-400 transition">Contact</a>
+          </nav>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setIsResumeOpen(true)}
+              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-md shadow-purple-600/30 transition flex items-center gap-1.5"
+            >
+              <span>📄 View / Download CV</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section — Uses Harshada's Portrait beside her name (as requested) */}
+      <section id="about" className="max-w-6xl mx-auto px-6 py-16">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 border-b border-[#23262d] pb-16">
+          
+          <div className="max-w-xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>B.Tech Information Technology • 3rd Year</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              Hi, I'm <span className="text-purple-400">Harshada Dinesh Lonare</span>.
+            </h1>
+
+            <p className="text-sm text-purple-200/90 font-medium font-serif italic">
+              St. Vincent Pallotti College of Engineering & Technology, Nagpur
+            </p>
+
+            <p className="text-[#9da3af] text-sm leading-relaxed">
+              {SITE_CONFIG.student.careerObjective}
+            </p>
+
+            <div className="pt-2 flex flex-wrap gap-3">
+              <a
+                href="#contact"
+                className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md transition"
+              >
+                Contact Me
+              </a>
+              <a
+                href={SITE_CONFIG.student.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-[#1e2129] hover:bg-[#282d38] text-white border border-[#2d323f] font-semibold text-xs transition"
+              >
+                GitHub Profile
+              </a>
+              <a
+                href={SITE_CONFIG.student.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-[#1e2129] hover:bg-[#282d38] text-white border border-[#2d323f] font-semibold text-xs transition"
+              >
+                LinkedIn Profile
+              </a>
+            </div>
+          </div>
+
+          {/* Harshada's Verified Portrait Image (Exact crop beside her name) */}
+          <div className="relative flex-shrink-0">
+            <div className="w-48 h-56 sm:w-56 sm:h-64 rounded-3xl overflow-hidden border-2 border-purple-500/50 shadow-2xl shadow-purple-950/60 bg-[#1e2129] relative group">
+              <img
+                src={SITE_CONFIG.student.avatarUrl}
+                alt="Harshada Dinesh Lonare"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121316] via-transparent to-transparent opacity-40" />
+            </div>
+
+            <div className="absolute -bottom-3 -right-3 p-2.5 rounded-2xl bg-[#181a20] border border-purple-500/40 shadow-xl text-center">
+              <span className="text-[10px] font-mono text-purple-300 font-bold block">
+                SVPCET NAGPUR
+              </span>
+              <span className="text-[9px] text-[#717682] font-mono">
+                ID: {SITE_CONFIG.student.rollNo}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Technical Skills Section — Exactly from Image 5 printed sheet */}
+      <section id="skills" className="max-w-6xl mx-auto px-6 py-12 border-b border-[#23262d]">
+        <div className="mb-8">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-400">
+            Core Competencies
+          </span>
+          <h2 className="text-2xl font-bold text-white mt-1">
+            Technical Skills Matrix
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {skillCategories.map((cat, idx) => (
+            <div
+              key={idx}
+              className="p-5 rounded-2xl bg-[#181a20] border border-[#23262d] shadow-lg space-y-3"
+            >
+              <h3 className="text-sm font-bold text-white border-b border-[#2d323f] pb-2">
+                {cat.title}
+              </h3>
+              <ul className="space-y-1.5 text-xs text-[#9da3af] font-mono">
+                {cat.skills.map((s, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Projects Section — Matches Image 5 printed sheet */}
+      <section id="projects" className="max-w-6xl mx-auto px-6 py-12 border-b border-[#23262d]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-400">
+              Curriculum & Innovation
+            </span>
+            <h2 className="text-2xl font-bold text-white mt-1">
+              Highlighted Engineering Projects
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {practicalProjects.map((p) => (
+            <div
+              key={p.id}
+              className="p-6 rounded-2xl bg-[#181a20] border border-[#23262d] hover:border-purple-500/40 transition-all space-y-3 flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                    {p.category}
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-white leading-snug">
+                  {p.title}
+                </h3>
+                <p className="text-xs text-[#9da3af] leading-relaxed mt-2">
+                  {p.description}
+                </p>
+              </div>
+
+              <div>
+                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-[#23262d]">
+                  {p.tags.map((t, i) => (
+                    <span key={i} className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#121316] text-[#717682]">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Areas of Interest Section — From Image 5 printed sheet */}
+      <section id="interests" className="max-w-6xl mx-auto px-6 py-12 border-b border-[#23262d]">
+        <div className="mb-6">
+          <span className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-400">
+            Specializations
+          </span>
+          <h2 className="text-2xl font-bold text-white mt-1">
+            Areas of Interest
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {areasOfInterest.map((area, i) => (
+            <div
+              key={i}
+              className="p-4 rounded-xl bg-[#181a20] border border-[#23262d] text-center space-y-2 hover:border-purple-500/40 transition"
+            >
+              <div className="text-2xl">{area.icon}</div>
+              <div className="text-xs font-bold text-white">{area.name}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact Section — From Image 5 printed sheet */}
+      <section id="contact" className="max-w-6xl mx-auto px-6 py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          
+          <div className="space-y-4">
+            <span className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-400">
+              Get in Touch
+            </span>
+            <h2 className="text-3xl font-bold text-white">
+              Let's Connect & Collaborate
+            </h2>
+            <p className="text-xs text-[#9da3af] leading-relaxed">
+              I'm open to internships, projects, and entry-level roles in software development, web development, UI/UX, and 3D & gaming technology.
+            </p>
+
+            <div className="space-y-2.5 pt-2 text-xs font-mono text-[#9da3af]">
+              <div>
+                <span className="text-purple-400">Email:</span>{" "}
+                <a href={`mailto:${SITE_CONFIG.student.personalEmail}`} className="hover:underline text-white">
+                  {SITE_CONFIG.student.personalEmail}
+                </a>
+              </div>
+              <div>
+                <span className="text-purple-400">Institutional:</span>{" "}
+                <a href={`mailto:${SITE_CONFIG.student.primaryEmail}`} className="hover:underline text-white">
+                  {SITE_CONFIG.student.primaryEmail}
+                </a>
+              </div>
+              <div>
+                <span className="text-purple-400">GitHub:</span>{" "}
+                <a href={SITE_CONFIG.student.githubUrl} target="_blank" rel="noreferrer" className="hover:underline text-white">
+                  github.com/harshadalonare
+                </a>
+              </div>
+              <div>
+                <span className="text-purple-400">LinkedIn:</span>{" "}
+                <a href={SITE_CONFIG.student.linkedinUrl} target="_blank" rel="noreferrer" className="hover:underline text-white">
+                  linkedin.com/in/harshada
+                </a>
+              </div>
+              <div>
+                <span className="text-purple-400">Location:</span>{" "}
+                <span className="text-white">Nagpur, Maharashtra, India</span>
+              </div>
+            </div>
+
+            {submittedMessage && (
+              <div className="p-4 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono">
+                ✓ Message received and recorded into PostgreSQL contact_messages table!
+              </div>
+            )}
+          </div>
+
+          {/* Interactive Contact Form */}
+          <div className="p-6 rounded-2xl bg-[#181a20] border border-[#23262d] shadow-xl">
+            <h3 className="text-base font-bold text-white mb-3">
+              Send an Academic or Project Message
+            </h3>
+            <form onSubmit={handleContactSubmit} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block text-[#9da3af] font-semibold mb-1">Your Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Faculty Evaluator"
+                  value={contactForm.name}
+                  onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#121316] border border-[#2d323f] rounded-xl text-white focus:outline-none focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[#9da3af] font-semibold mb-1">Your Email *</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="e.g. evaluator@stvincentngp.edu.in"
+                  value={contactForm.email}
+                  onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#121316] border border-[#2d323f] rounded-xl text-white focus:outline-none focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[#9da3af] font-semibold mb-1">Subject</label>
+                <input
+                  type="text"
+                  value={contactForm.subject}
+                  onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#121316] border border-[#2d323f] rounded-xl text-white focus:outline-none focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[#9da3af] font-semibold mb-1">Message *</label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Write your feedback or message..."
+                  value={contactForm.message}
+                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#121316] border border-[#2d323f] rounded-xl text-white focus:outline-none focus:border-purple-500 resize-none"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md transition"
+              >
+                Submit Message (Save to PostgreSQL)
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Resume Modal */}
+      {isResumeOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+          <div className="relative bg-[#181a20] border border-[#2d323f] rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl max-h-[85vh] overflow-y-auto text-xs text-[#e2e4e9]">
+            <button
+              onClick={() => setIsResumeOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#23262d] text-[#9da3af] hover:text-white flex items-center justify-center"
+            >
+              ✕
+            </button>
+
+            <div className="border-b border-[#2d323f] pb-4 mb-4 flex items-center gap-4">
+              <img
+                src={SITE_CONFIG.student.avatarUrl}
+                alt={SITE_CONFIG.student.fullName}
+                className="w-16 h-20 rounded-xl object-cover border border-purple-500/50"
+              />
+              <div>
+                <h3 className="text-xl font-bold text-white">Harshada Dinesh Lonare</h3>
+                <p className="text-purple-300 font-mono text-[11px]">B.Tech Information Technology Student</p>
+                <p className="text-[#9da3af] text-[10px]">St. Vincent Pallotti College of Engineering & Technology, Nagpur</p>
+                <p className="text-[#9da3af] text-[10px]">ID: 24010016 • harshadalonare.24@stvincentngp.edu.in</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-bold text-white text-xs uppercase tracking-wider text-purple-400 mb-1">
+                  Career Objective
+                </h4>
+                <p className="text-[#9da3af] leading-relaxed">
+                  {SITE_CONFIG.student.careerObjective}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-white text-xs uppercase tracking-wider text-purple-400 mb-1">
+                  Education
+                </h4>
+                <div className="bg-[#121316] p-3 rounded-xl border border-[#23262d]">
+                  <div className="font-bold text-white">Bachelor of Technology (B.Tech) — Information Technology</div>
+                  <div className="text-purple-300">St. Vincent Pallotti College of Engineering & Technology, Nagpur</div>
+                  <div className="text-[11px] text-[#717682]">3rd Year (Semester V) • 2023 - 2027 • Current GPA: 9.35</div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-white text-xs uppercase tracking-wider text-purple-400 mb-1">
+                  Technical Skills Summary
+                </h4>
+                <p className="text-[#9da3af]">
+                  <strong>Languages:</strong> C, C++, Python, JavaScript<br />
+                  <strong>Web & Frameworks:</strong> HTML5, CSS3, React, TypeScript, Node.js, Firebase, PostgreSQL<br />
+                  <strong>Design & 3D:</strong> Figma, Blender, Unity, Canva<br />
+                  <strong>Developer Tools:</strong> VS Code, Git, GitHub, Android Studio
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-white text-xs uppercase tracking-wider text-purple-400 mb-1">
+                  Practical Evaluation Projects
+                </h4>
+                <ul className="list-disc pl-4 text-[#9da3af] space-y-1">
+                  <li><strong>AgriConnect:</strong> Smart agriculture portal connecting farmers with market data and logistics.</li>
+                  <li><strong>Smart Citizen Reporting:</strong> Civic grievance tracking system with geolocation.</li>
+                  <li><strong>3D Health Awareness AI Bot:</strong> Interactive 3D anatomical model with AI voice consultation.</li>
+                  <li><strong>NEXUS STUDIO:</strong> Unified six-project interactive web development platform.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="pt-4 mt-6 border-t border-[#2d323f] flex justify-end gap-3">
+              <button
+                onClick={() => window.print()}
+                className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs"
+              >
+                Print / Save PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Footer (Matches image 5 signature line) */}
+      <footer className="border-t border-[#23262d] py-8 px-6 text-center text-xs text-[#717682]">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            © 2026 Harshada Lonare. Built with modern CSS.
+          </div>
+          <div className="font-mono text-[11px] text-purple-400">
+            Faculty Evaluation Signature: Approved (18/8/26)
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\authentication\SecureFlowView.jsx ---
+// Project 4 — SecureFlow: Animated Authentication & SQL Identity System
+
+
+
+function SecureFlowView({ onBackToDashboard, onShowToast, currentUser, onLogin, onLogout }) {
+  const [mode, setMode] = useState("login"); // 'login' | 'register' | 'forgot'
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Login inputs
+  const [loginEmail, setLoginEmail] = useState("harshadalonare.24@stvincentngp.edu.in");
+  const [loginPassword, setLoginPassword] = useState("admin@123");
+  const [rememberMe, setRememberMe] = useState(true);
+
+  // Register inputs
+  const [regFullName, setRegFullName] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
+  const [regConfirmPassword, setRegConfirmPassword] = useState("");
+  const [regRole, setRegRole] = useState("Student Member");
+
+  // Forgot password inputs
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [resetTokenInfo, setResetTokenInfo] = useState(null);
+
+  // Error feedback
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Password strength calculator
+  const calculateStrength = (pwd) => {
+    let score = 0;
+    if (pwd.length >= 8) score += 25;
+    if (/[A-Z]/.test(pwd)) score += 25;
+    if (/[0-9]/.test(pwd)) score += 25;
+    if (/[^A-Za-z0-9]/.test(pwd)) score += 25;
+    return score;
+  };
+
+  const passwordStrength = calculateStrength(regPassword);
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+    setIsLoading(true);
+
+    try {
+      const user = await db.loginUser(loginEmail, loginPassword);
+      onLogin(user);
+      setSuccessMessage(`Welcome back, ${user.fullName}! Session authenticated.`);
+      onShowToast({
+        title: "Authentication Successful",
+        message: `Logged in as ${user.fullName} (${user.role}). Verified against PostgreSQL users table.`,
+        type: "success"
+      });
+    } catch (err) {
+      setErrorMessage(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (regPassword !== regConfirmPassword) {
+      setErrorMessage("Passwords do not match. Please re-enter.");
+      return;
+    }
+    if (regPassword.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await db.registerUser({
+        fullName: regFullName,
+        email: regEmail,
+        password: regPassword,
+        role: regRole
+      });
+
+      setSuccessMessage("Account created successfully! Credentials written to PostgreSQL users table. You may now log in.");
+      onShowToast({
+        title: "Registration Recorded in PostgreSQL",
+        message: `Account for ${regFullName} registered with SHA-256 hashed password.`,
+        type: "success"
+      });
+
+      // Switch to login tab and prefill
+      setLoginEmail(regEmail);
+      setLoginPassword(regPassword);
+      setMode("login");
+    } catch (err) {
+      setErrorMessage(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotSubmit = (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    const user = db.getTable("users").find((u) => u.email.toLowerCase() === forgotEmail.toLowerCase());
+    if (!user) {
+      setErrorMessage("No registered account found with that email address.");
+      return;
+    }
+    const token = `RESET-${Math.random().toString(36).substring(2, 10).toUpperCase()}-2026`;
+    setResetTokenInfo({ email: forgotEmail, token });
+    setSuccessMessage("Demonstration password reset token generated successfully.");
+  };
+
+  return (
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between overflow-hidden font-sans">
+      
+      {/* Animated Galaxy / Cyberpunk Background Effects */}
+      <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-cyan-600/20 via-blue-700/15 to-transparent rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
+      <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-tr from-purple-600/20 via-pink-700/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+      {/* Top Header */}
+      <header className="relative z-20 px-6 py-4 flex items-center justify-between max-w-7xl mx-auto w-full border-b border-slate-800/60 bg-slate-950/60 backdrop-blur-md">
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={onBackToDashboard}
+            className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-300 text-xs font-semibold flex items-center gap-1.5 transition border border-slate-700"
+          >
+            <span>← Back to Lab</span>
+          </button>
+          <div className="h-5 w-px bg-slate-800" />
+          <div className="flex items-center space-x-2">
+            <span className="text-xl">🛡️</span>
+            <span className="font-bold text-sm tracking-wide text-white">
+              SecureFlow <span className="text-cyan-400 font-mono text-xs">v2.4</span>
+            </span>
+          </div>
+        </div>
+
+        {currentUser ? (
+          <div className="flex items-center space-x-3 text-xs">
+            <div className="text-right hidden sm:block">
+              <div className="font-bold text-white">{currentUser.fullName}</div>
+              <div className="text-cyan-400 font-mono text-[10px]">{currentUser.role}</div>
+            </div>
+            <button
+              onClick={() => {
+                onLogout();
+                onShowToast({ title: "Signed Out", message: "User session terminated.", type: "success" });
+              }}
+              className="px-3 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-500/40 text-rose-200 text-xs font-semibold transition"
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <div className="text-xs font-mono text-slate-400">
+            PostgreSQL DB Auth Active
+          </div>
+        )}
+      </header>
+
+      {/* Main Authentication Card with CSS Keyframe Transitions */}
+      <main className="relative z-10 flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-md bg-slate-900/80 border border-slate-800/90 rounded-3xl p-8 shadow-2xl backdrop-blur-xl space-y-6">
+          
+          {/* Card Brand Header */}
+          <div className="text-center space-y-2">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center mx-auto text-xl shadow-lg shadow-cyan-500/20">
+              🔒
+            </div>
+            <h2 className="text-2xl font-bold tracking-tight text-white">
+              {mode === "login" && "Sign In to SecureFlow"}
+              {mode === "register" && "Create Verified Account"}
+              {mode === "forgot" && "Recover Credentials"}
+            </h2>
+            <p className="text-xs text-slate-400">
+              {mode === "login" && "Protected by SHA-256 Web Crypto & PostgreSQL Persistence"}
+              {mode === "register" && "Insert new user credentials directly into PostgreSQL schema"}
+              {mode === "forgot" && "Generate cryptographic reset token"}
+            </p>
+          </div>
+
+          {/* Tab Switcher Pills */}
+          <div className="flex p-1 bg-slate-950/80 rounded-xl border border-slate-800">
+            <button
+              onClick={() => {
+                setMode("login");
+                setErrorMessage("");
+                setSuccessMessage("");
+              }}
+              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                mode === "login"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => {
+                setMode("register");
+                setErrorMessage("");
+                setSuccessMessage("");
+              }}
+              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                mode === "register"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Register
+            </button>
+          </div>
+
+          {/* Feedback Alerts */}
+          {errorMessage && (
+            <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-700/60 text-rose-200 text-xs flex items-start gap-2">
+              <span>⚠️</span>
+              <span>{errorMessage}</span>
+            </div>
+          )}
+          {successMessage && (
+            <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-700/60 text-emerald-200 text-xs flex items-start gap-2">
+              <span>✓</span>
+              <span>{successMessage}</span>
+            </div>
+          )}
+
+          {/* TAB 1: LOGIN FORM */}
+          {mode === "login" && (
+            <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs animate-fadeIn">
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="student@stvincentngp.edu.in"
+                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400 font-mono transition"
+                />
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-slate-300 font-semibold">Password</label>
+                  <button
+                    type="button"
+                    onClick={() => setMode("forgot")}
+                    className="text-cyan-400 hover:underline text-[11px]"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400 font-mono transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-2.5 text-slate-400 hover:text-white"
+                  >
+                    {showPassword ? "👁️" : "🙈"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-1">
+                <label className="flex items-center gap-2 cursor-pointer text-slate-400">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-0"
+                  />
+                  <span>Remember session</span>
+                </label>
+                <span className="text-[10px] text-slate-500 font-mono">Demo: admin@123</span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition disabled:opacity-50"
+              >
+                {isLoading ? "Validating with SQL..." : "Authenticate Account"}
+              </button>
+            </form>
+          )}
+
+          {/* TAB 2: REGISTER FORM */}
+          {mode === "register" && (
+            <form onSubmit={handleRegisterSubmit} className="space-y-3.5 text-xs animate-fadeIn">
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Harshada Dinesh Lonare"
+                  value={regFullName}
+                  onChange={(e) => setRegFullName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Institutional Email *</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="name.24@stvincentngp.edu.in"
+                  value={regEmail}
+                  onChange={(e) => setRegEmail(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Academic Role</label>
+                <select
+                  value={regRole}
+                  onChange={(e) => setRegRole(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400"
+                >
+                  <option value="Student Member">Student Member (SVPCET)</option>
+                  <option value="Faculty Evaluator">Faculty Evaluator</option>
+                  <option value="Guest Reviewer">Guest Reviewer</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Password *</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    placeholder="Min 6 characters"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400 font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-2 text-slate-400 hover:text-white"
+                  >
+                    {showPassword ? "👁️" : "🙈"}
+                  </button>
+                </div>
+
+                {/* Password Strength Meter */}
+                {regPassword && (
+                  <div className="mt-2 space-y-1">
+                    <div className="flex justify-between text-[10px] text-slate-400">
+                      <span>Strength</span>
+                      <span className={passwordStrength > 50 ? "text-emerald-400" : "text-amber-400"}>
+                        {passwordStrength <= 25 && "Weak"}
+                        {passwordStrength === 50 && "Fair"}
+                        {passwordStrength === 70 && "Good"}
+                        {passwordStrength >= 75 && "Strong"}
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full transition-all duration-300 ${
+                          passwordStrength <= 25 ? "bg-rose-500 w-1/4" :
+                          passwordStrength === 50 ? "bg-amber-500 w-2/4" :
+                          passwordStrength === 75 ? "bg-blue-500 w-3/4" : "bg-emerald-500 w-full"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Confirm Password *</label>
+                <input
+                  type="password"
+                  required
+                  value={regConfirmPassword}
+                  onChange={(e) => setRegConfirmPassword(e.target.value)}
+                  placeholder="Repeat password"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400 font-mono"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition mt-2"
+              >
+                {isLoading ? "Saving to SQL..." : "Register User in PostgreSQL"}
+              </button>
+            </form>
+          )}
+
+          {/* TAB 3: FORGOT PASSWORD */}
+          {mode === "forgot" && (
+            <form onSubmit={handleForgotSubmit} className="space-y-4 text-xs animate-fadeIn">
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Account Email Address</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="harshadalonare.24@stvincentngp.edu.in"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-mono focus:outline-none focus:border-cyan-400"
+                />
+              </div>
+
+              {resetTokenInfo && (
+                <div className="p-3.5 rounded-xl bg-slate-950 border border-cyan-500/40 space-y-1 font-mono text-[11px]">
+                  <div className="text-cyan-300 font-bold">✓ Reset Token Generated:</div>
+                  <div className="p-2 rounded bg-slate-900 text-emerald-400 select-all">
+                    {resetTokenInfo.token}
+                  </div>
+                  <div className="text-[10px] text-slate-500">
+                    Use this token during faculty presentation to verify reset handling.
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition"
+              >
+                Generate Token Preview
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setMode("login")}
+                className="w-full text-center text-slate-400 hover:text-white text-xs pt-1"
+              >
+                ← Return to Login
+              </button>
+            </form>
+          )}
+
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="relative z-10 py-6 px-6 border-t border-slate-800 text-center text-xs text-slate-500 font-mono">
+        NEXUS STUDIO • SecureFlow Practical 04 • Relational PostgreSQL Schema & Cryptographic Hashing
+      </footer>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\news\DailyBriefView.jsx ---
+// Project 5 — The Daily Brief: Responsive Editorial News Portal
+
+
+
+function DailyBriefView({ onBackToDashboard, onShowToast }) {
+  const [articles, setArticles] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("feed"); // 'feed' | 'bookmarks'
+  const [bookmarks, setBookmarks] = useState([]);
+  const [readingArticle, setReadingArticle] = useState(null);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  useEffect(() => {
+    const loadArticles = () => {
+      setArticles(db.getTable("articles"));
+    };
+    loadArticles();
+    return db.subscribe(loadArticles);
+  }, []);
+
+  const categories = [
+    "All",
+    "Technology",
+    "Science & Space",
+    "Education & Campus",
+    "Business & Markets",
+    "Sports"
+  ];
+
+  const leadArticle = articles.find((a) => a.is_lead) || articles[0];
+  const breakingArticle = articles.find((a) => a.is_breaking) || articles[0];
+
+  const toggleBookmark = (id) => {
+    setBookmarks((prev) => {
+      const exists = prev.includes(id);
+      const updated = exists ? prev.filter((i) => i !== id) : [...prev, id];
+      onShowToast({
+        title: exists ? "Article Removed" : "Article Bookmarked",
+        message: exists ? "Removed from your saved library." : "Saved to your reading library.",
+        type: "success"
+      });
+      return updated;
+    });
+  };
+
+  const filteredArticles = articles.filter((art) => {
+    const matchesCat = selectedCategory === "All" || art.category === selectedCategory;
+    const matchesSearch =
+      art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      art.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      art.author.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
+
+  const bookmarkedArticles = articles.filter((art) => bookmarks.includes(art.id));
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    db.subscribeNewsletter(newsletterEmail);
+    setNewsletterSubscribed(true);
+    setNewsletterEmail("");
+    onShowToast({
+      title: "Subscribed to The Daily Brief",
+      message: "Subscription saved to PostgreSQL newsletter_subscriptions table.",
+      type: "success"
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fcfaf7] text-[#1c1917] font-sans selection:bg-emerald-600 selection:text-white">
+      
+      {/* Top Utility Bar */}
+      <div className="bg-[#1c1917] text-[#a8a29e] text-xs py-2 px-6 border-b border-stone-800">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={onBackToDashboard}
+              className="px-2.5 py-1 rounded bg-stone-800 hover:bg-stone-700 text-emerald-400 font-semibold flex items-center gap-1 transition"
+            >
+              <span>← Back to Lab</span>
+            </button>
+            <span className="hidden sm:inline font-mono">
+              Academic Publishing Edition • 2026
+            </span>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <span className="font-mono text-[11px]">
+              Nagpur, Maharashtra • {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </span>
+            <button
+              onClick={() => setActiveTab(activeTab === "feed" ? "bookmarks" : "feed")}
+              className="text-white hover:text-emerald-400 transition flex items-center gap-1"
+            >
+              <span>🔖 Saved ({bookmarks.length})</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Editorial Newspaper Masthead */}
+      <header className="border-b-2 border-stone-900 py-6 px-6 max-w-7xl mx-auto text-center">
+        <div className="text-[10px] uppercase tracking-[0.3em] text-stone-500 font-mono mb-1">
+          The Premier Engineering & Technology Chronicle
+        </div>
+        <h1 className="text-4xl sm:text-6xl font-extrabold font-serif tracking-tight text-stone-950 uppercase">
+          The Daily Brief
+        </h1>
+        <div className="flex items-center justify-center gap-4 text-xs text-stone-600 font-serif italic mt-2">
+          <span>Vol. XXIV • No. 104</span>
+          <span>•</span>
+          <span>Six Projects Academic Syndicate</span>
+          <span>•</span>
+          <span>Independent Digital Press</span>
+        </div>
+      </header>
+
+      {/* Breaking News Ticker Marquee */}
+      {breakingArticle && (
+        <div className="bg-emerald-950 text-emerald-200 text-xs py-2 px-6 overflow-hidden flex items-center">
+          <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-emerald-400 pr-4 flex-shrink-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span>Breaking Dispatch:</span>
+          </div>
+          <div className="truncate font-serif italic text-white cursor-pointer hover:underline" onClick={() => setReadingArticle(breakingArticle)}>
+            {breakingArticle.title} — By {breakingArticle.author} ({breakingArticle.read_time})
+          </div>
+        </div>
+      )}
+
+      {/* Category Navigation Bar */}
+      <nav className="border-b border-stone-200 bg-white/95 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-2.5 flex items-center justify-between gap-4 overflow-x-auto">
+          <div className="flex items-center space-x-1 sm:space-x-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setActiveTab("feed");
+                }}
+                className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                  selectedCategory === cat && activeTab === "feed"
+                    ? "bg-stone-900 text-white font-bold"
+                    : "text-stone-600 hover:text-stone-900 hover:bg-stone-100"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Search Box */}
+          <div className="relative w-48 sm:w-64 flex-shrink-0">
+            <input
+              type="text"
+              placeholder="Search dispatches..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-7 pr-3 py-1 bg-stone-100 border border-stone-300 rounded-lg text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:border-stone-800"
+            />
+            <span className="absolute left-2.5 top-1.5 text-stone-400 text-xs">🔍</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content Area */}
+      <main className="max-w-7xl mx-auto px-6 py-8 space-y-10">
+
+        {/* SAVED BOOKMARKS VIEW */}
+        {activeTab === "bookmarks" ? (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between border-b border-stone-300 pb-4">
+              <div>
+                <h2 className="text-2xl font-bold font-serif text-stone-900">
+                  Your Bookmarked Dispatches ({bookmarkedArticles.length})
+                </h2>
+                <p className="text-xs text-stone-500">
+                  Saved articles available for offline study and evaluation.
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveTab("feed")}
+                className="px-4 py-2 rounded-xl bg-stone-900 text-white text-xs font-semibold"
+              >
+                ← Return to Live Feed
+              </button>
+            </div>
+
+            {bookmarkedArticles.length === 0 ? (
+              <div className="p-12 text-center text-stone-400 text-sm">
+                No bookmarked articles yet. Click the ribbon icon on any story to save it.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {bookmarkedArticles.map((art) => (
+                  <div key={art.id} className="bg-white border border-stone-200 rounded-2xl p-5 shadow-sm space-y-3">
+                    <img src={art.image_url} alt={art.title} className="w-full h-44 object-cover rounded-xl" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">
+                      {art.category}
+                    </span>
+                    <h3
+                      onClick={() => setReadingArticle(art)}
+                      className="text-base font-bold font-serif hover:text-emerald-700 cursor-pointer"
+                    >
+                      {art.title}
+                    </h3>
+                    <p className="text-xs text-stone-600 line-clamp-2">
+                      {art.summary}
+                    </p>
+                    <div className="pt-2 flex justify-between items-center text-xs text-stone-500">
+                      <span>{art.read_time}</span>
+                      <button
+                        onClick={() => toggleBookmark(art.id)}
+                        className="text-rose-600 hover:underline font-semibold"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* LIVE NEWSPAPER FEED */
+          <div className="space-y-10">
+            
+            {/* Lead Story Feature — Large Editorial Hero */}
+            {leadArticle && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-stone-300 pb-10">
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="relative h-80 sm:h-96 w-full rounded-2xl overflow-hidden shadow-lg">
+                    <img
+                      src={leadArticle.image_url}
+                      alt={leadArticle.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider">
+                      Lead Dispatch
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 font-mono">
+                      {leadArticle.category}
+                    </span>
+                    <h2
+                      onClick={() => setReadingArticle(leadArticle)}
+                      className="text-2xl sm:text-3xl font-extrabold font-serif text-stone-900 hover:text-emerald-800 cursor-pointer transition leading-tight"
+                    >
+                      {leadArticle.title}
+                    </h2>
+                    <p className="text-sm text-stone-600 leading-relaxed">
+                      {leadArticle.summary}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-stone-200 space-y-3">
+                    <div className="flex items-center justify-between text-xs text-stone-500">
+                      <div>
+                        By <strong className="text-stone-900">{leadArticle.author}</strong>
+                      </div>
+                      <div>{leadArticle.read_time}</div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setReadingArticle(leadArticle)}
+                        className="flex-1 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition"
+                      >
+                        Read Full Dispatch →
+                      </button>
+                      <button
+                        onClick={() => toggleBookmark(leadArticle.id)}
+                        className={`px-3 py-2 rounded-xl border text-xs font-bold transition ${
+                          bookmarks.includes(leadArticle.id)
+                            ? "bg-emerald-50 border-emerald-500 text-emerald-700"
+                            : "bg-stone-100 border-stone-300 text-stone-700"
+                        }`}
+                      >
+                        {bookmarks.includes(leadArticle.id) ? "🔖 Saved" : "🔖 Save"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Editorial Multi-Column Article Grid */}
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold font-serif text-stone-900">
+                  Latest In-Depth Stories
+                </h3>
+                <span className="text-xs text-stone-500 font-mono">
+                  Showing {filteredArticles.length} published dispatches
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredArticles.map((art) => (
+                  <article
+                    key={art.id}
+                    className="bg-white rounded-2xl border border-stone-200 p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4 group"
+                  >
+                    <div className="space-y-3">
+                      <div className="relative h-44 w-full rounded-xl overflow-hidden bg-stone-100">
+                        <img
+                          src={art.image_url}
+                          alt={art.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500 cursor-pointer"
+                          onClick={() => setReadingArticle(art)}
+                        />
+                        <button
+                          onClick={() => toggleBookmark(art.id)}
+                          className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/90 text-stone-700 hover:text-emerald-600 shadow-sm"
+                          title="Bookmark Story"
+                        >
+                          {bookmarks.includes(art.id) ? "🔖" : "🤍"}
+                        </button>
+                      </div>
+
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 font-mono">
+                        {art.category}
+                      </span>
+
+                      <h4
+                        onClick={() => setReadingArticle(art)}
+                        className="text-base font-bold font-serif text-stone-900 group-hover:text-emerald-700 cursor-pointer leading-snug"
+                      >
+                        {art.title}
+                      </h4>
+
+                      <p className="text-xs text-stone-600 line-clamp-3 leading-relaxed">
+                        {art.summary}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-500">
+                      <span>By {art.author}</span>
+                      <span>{art.read_time}</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            {/* Newsletter Subscription Card */}
+            <div className="rounded-3xl bg-[#1c1917] text-white p-8 sm:p-12 text-center max-w-3xl mx-auto space-y-4">
+              <span className="text-xs font-mono font-semibold uppercase tracking-widest text-emerald-400">
+                The Daily Brief Digest
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-bold font-serif">
+                Delivered Every Morning to Your Inbox
+              </h3>
+              <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto">
+                Receive curated tech breakthroughs, campus engineering updates, and scholarly analyses vetted by faculty and student contributors.
+              </p>
+
+              {newsletterSubscribed ? (
+                <div className="p-3.5 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-xs font-mono inline-block">
+                  ✓ Thank you! Subscription recorded in PostgreSQL newsletter_subscriptions table.
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto pt-2">
+                  <input
+                    type="email"
+                    required
+                    placeholder="Enter your student or personal email..."
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-stone-900 border border-stone-700 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-emerald-400"
+                  />
+                  <button
+                    type="submit"
+                    className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition"
+                  >
+                    Subscribe
+                  </button>
+                </form>
+              )}
+            </div>
+
+          </div>
+        )}
+
+      </main>
+
+      {/* Full Article Reader Modal */}
+      {readingArticle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="relative bg-white rounded-3xl p-6 sm:p-10 max-w-3xl w-full max-h-[88vh] overflow-y-auto shadow-2xl space-y-6 text-stone-900 font-serif">
+            
+            <button
+              onClick={() => setReadingArticle(null)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center"
+            >
+              ✕
+            </button>
+
+            <div className="space-y-2 border-b border-stone-200 pb-4">
+              <span className="text-xs font-sans font-bold uppercase tracking-wider text-emerald-700">
+                {readingArticle.category} • Published {readingArticle.publication_date}
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-950 leading-tight">
+                {readingArticle.title}
+              </h2>
+              <div className="flex items-center justify-between text-xs font-sans text-stone-500 pt-1">
+                <span>By <strong>{readingArticle.author}</strong></span>
+                <span>{readingArticle.read_time} • {readingArticle.views_count} Views</span>
+              </div>
+            </div>
+
+            <div className="h-64 sm:h-80 w-full rounded-2xl overflow-hidden">
+              <img
+                src={readingArticle.image_url}
+                alt={readingArticle.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="text-sm sm:text-base text-stone-800 leading-relaxed space-y-4 font-serif">
+              {readingArticle.content.split("\n\n").map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+
+            <div className="pt-4 border-t border-stone-200 flex items-center justify-between font-sans text-xs">
+              <button
+                onClick={() => toggleBookmark(readingArticle.id)}
+                className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold"
+              >
+                {bookmarks.includes(readingArticle.id) ? "🔖 Remove Bookmark" : "🔖 Save to Bookmarks"}
+              </button>
+              <button
+                onClick={() => setReadingArticle(null)}
+                className="px-5 py-2 rounded-xl bg-stone-900 text-white font-bold"
+              >
+                Done Reading
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="border-t border-stone-300 py-10 px-6 bg-stone-100 text-xs text-stone-600">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <div>
+            <div className="font-bold font-serif text-sm text-stone-900">THE DAILY BRIEF</div>
+            <div className="text-[10px] text-stone-500">NEXUS STUDIO • Web Engineering Practical 05</div>
+          </div>
+          <div>
+            Demonstrating CSS Grid, Flexbox, Media Queries & Stacking Contexts (Z-Index).
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\features\student-hub\StudentHubView.jsx ---
+// Project 6 — Student Hub: React Student Profile Directory (St. Vincent Pallotti College)
+
+
+
+
+function StudentHubView({ onBackToDashboard, onShowToast }) {
+  const [students, setStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDept, setSelectedDept] = useState("All");
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [showMoreStudents, setShowMoreStudents] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // New Student registration form state
+  const [newStudent, setNewStudent] = useState({
+    fullName: "",
+    department: "Information Technology",
+    academicYear: "3rd Year",
+    semester: "Vth Semester",
+    email: "",
+    contact: "",
+    gpa: "9.10",
+    academicInterest: ""
+  });
+
+  useEffect(() => {
+    const loadStudents = () => {
+      setStudents(db.getTable("students"));
+    };
+    loadStudents();
+    return db.subscribe(loadStudents);
+  }, []);
+
+  const featuredStudent = students.find((s) => s.university_id === "24010016") || students[0];
+
+  const departments = [
+    "All",
+    "Information Technology",
+    "Computer Science & Engineering",
+    "Artificial Intelligence & Data Science",
+    "Electronics & Telecommunication",
+    "Mechanical Engineering",
+    "Civil Engineering"
+  ];
+
+  const years = ["All", "2nd Year", "3rd Year", "4th Year"];
+
+  const filteredStudents = students.filter((s) => {
+    const matchesDept = selectedDept === "All" || s.department === selectedDept;
+    const matchesYear = selectedYear === "All" || s.academic_year === selectedYear;
+    const matchesSearch =
+      s.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.university_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.email.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesDept && matchesYear && matchesSearch;
+  });
+
+  const visibleDirectoryStudents = showMoreStudents ? filteredStudents : filteredStudents.slice(0, 4);
+
+  const handleCreateStudent = (e) => {
+    e.preventDefault();
+    if (!newStudent.fullName || !newStudent.email) {
+      alert("Please fill in Student Full Name and Email.");
+      return;
+    }
+    const created = db.addStudent({
+      full_name: newStudent.fullName,
+      department: newStudent.department,
+      academic_year: newStudent.academicYear,
+      semester: newStudent.semester,
+      email: newStudent.email,
+      contact: newStudent.contact || "9823000000",
+      gpa: Number(newStudent.gpa) || 8.90,
+      academic_interest: newStudent.academicInterest || "Undergraduate Engineering Research"
+    });
+    setIsAddModalOpen(false);
+    setNewStudent({
+      fullName: "",
+      department: "Information Technology",
+      academicYear: "3rd Year",
+      semester: "Vth Semester",
+      email: "",
+      contact: "",
+      gpa: "9.10",
+      academicInterest: ""
+    });
+    onShowToast({
+      title: "Student Profile Registered",
+      message: `${created.full_name} enrolled and saved to PostgreSQL students table.`,
+      code: created.university_id,
+      type: "success"
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#f7f5ed] text-[#1b3d2f] font-sans selection:bg-[#0a3d2e] selection:text-white">
+      
+      {/* Top Institutional Header — Matches User Reference Image 4 */}
+      <header className="border-b border-[#e2dec9] bg-[#fbfaf6] px-6 py-4 shadow-sm sticky top-0 z-30">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-3.5">
+            <button
+              onClick={onBackToDashboard}
+              className="px-3 py-1.5 rounded-lg bg-[#e8e4d3] hover:bg-[#ded9c4] text-[#0a3d2e] text-xs font-semibold flex items-center gap-1.5 transition"
+            >
+              <span>← Back to Lab</span>
+            </button>
+            <div className="h-5 w-px bg-[#d1cca8]" />
+            <div className="flex items-center space-x-3">
+              {/* SVP Seal Icon */}
+              <div className="w-9 h-9 rounded-full bg-[#0a3d2e] text-[#d4af37] flex items-center justify-center font-serif font-black text-xs border border-[#d4af37] shadow-sm">
+                SVP
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#69745e] block">
+                  COLLEGE PORTAL
+                </span>
+                <h1 className="text-sm sm:text-base font-bold font-serif text-[#0a3d2e] leading-tight">
+                  St. Vincent Pallotti College of Engineering & Technology
+                </h1>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="hidden sm:inline-flex px-3.5 py-1.5 rounded-full bg-[#0a3d2e] hover:bg-[#124d3b] text-[#fbfaf6] text-xs font-semibold transition"
+            >
+              + Add Student
+            </button>
+            <div className="px-3.5 py-1 rounded-full bg-[#e8e4d3] text-[#0a3d2e] text-xs font-bold border border-[#d1cca8]">
+              Student Hub
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Student Portal Content */}
+      <main className="max-w-6xl mx-auto px-6 py-8 space-y-10">
+
+        {/* Welcome Salutation Section — Exactly from Image 4 */}
+        <section className="space-y-1">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-[#69745e]">
+            MY PROFILE
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-serif text-[#0a3d2e]">
+            Welcome, Harshada.
+          </h2>
+          <p className="text-xs sm:text-sm text-[#505a49]">
+            Keep your student details in one secure and easy-to-read place.
+          </p>
+        </section>
+
+        {/* Featured Student Profile Card — Matches Image 4 Layout and Harshada's Crop */}
+        {featuredStudent && (
+          <div className="relative rounded-3xl bg-white border-2 border-[#165b45]/30 p-6 sm:p-8 shadow-md">
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pb-6 border-b border-[#eeebe0]">
+              {/* Photo Frame */}
+              <div className="relative w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden border-2 border-[#0a3d2e]/20 shadow-sm bg-[#fbfaf6] flex-shrink-0">
+                <img
+                  src={featuredStudent.avatar_url || SITE_CONFIG.student.avatarUrl}
+                  alt={featuredStudent.full_name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Title & Status */}
+              <div className="space-y-1.5">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#69745e] block">
+                  STUDENT PROFILE
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-bold font-serif text-[#0a3d2e]">
+                  {featuredStudent.full_name}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#0a3d2e] font-semibold">
+                  {featuredStudent.department}
+                </p>
+                <div className="flex items-center gap-2 pt-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-xs text-[#2e5944] font-medium">
+                    {featuredStudent.enrollment_status}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Student Attribute Grid — From Image 4 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-5 border-b border-[#eeebe0] text-xs">
+              <div className="p-3 rounded-xl bg-[#fbfaf6] border border-[#ece7d6]">
+                <div className="text-[10px] uppercase font-bold tracking-wider text-[#69745e] mb-1">
+                  UNIVERSITY ID
+                </div>
+                <div className="text-sm font-bold text-[#0a3d2e] font-mono">
+                  {featuredStudent.university_id}
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#fbfaf6] border border-[#ece7d6]">
+                <div className="text-[10px] uppercase font-bold tracking-wider text-[#69745e] mb-1">
+                  ACADEMIC YEAR
+                </div>
+                <div className="text-sm font-bold text-[#0a3d2e]">
+                  {featuredStudent.academic_year} — {featuredStudent.semester}
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#fbfaf6] border border-[#ece7d6]">
+                <div className="text-[10px] uppercase font-bold tracking-wider text-[#69745e] mb-1">
+                  EMAIL
+                </div>
+                <div className="text-xs font-semibold text-[#0a3d2e] font-mono truncate">
+                  <a href={`mailto:${featuredStudent.email}`} className="hover:underline">
+                    {featuredStudent.email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#fbfaf6] border border-[#ece7d6]">
+                <div className="text-[10px] uppercase font-bold tracking-wider text-[#69745e] mb-1">
+                  CONTACT
+                </div>
+                <div className="text-xs font-semibold text-[#0a3d2e] font-mono">
+                  <a href={`tel:${featuredStudent.contact}`} className="hover:underline">
+                    {featuredStudent.contact}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Academic Interest Callout Box — From Image 4 */}
+            <div className="mt-5 p-4 rounded-2xl bg-[#eff5ef] border border-[#cbe0ce] text-xs">
+              <div className="font-bold text-[#1b5e3c] uppercase tracking-wider text-[11px] mb-1 flex items-center gap-2">
+                <span>●</span>
+                <span>ACADEMIC INTEREST</span>
+              </div>
+              <p className="text-[#264e37] leading-relaxed">
+                {featuredStudent.academic_interest}
+              </p>
+            </div>
+
+          </div>
+        )}
+
+        {/* Directory Dashboard Controls — From Image 4 ("DASHBOARD OPTIONS: Student Directory + More Students") */}
+        <section className="space-y-4 pt-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#69745e]">
+                DASHBOARD OPTIONS
+              </span>
+              <h3 className="text-2xl font-bold font-serif text-[#0a3d2e]">
+                Student Directory
+              </h3>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowMoreStudents(!showMoreStudents)}
+                className="px-4 py-2 rounded-full bg-[#0a3d2e] hover:bg-[#124d3b] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+              >
+                <span>{showMoreStudents ? "Show Less" : "More Students +"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Search and Department Filter Bar */}
+          <div className="flex flex-col md:flex-row gap-3 pt-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder="Search students by name, ID (e.g. 24010016), or email..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#ded8c2] text-xs text-[#0a3d2e] placeholder-[#7d8872] focus:outline-none focus:border-[#0a3d2e]"
+              />
+              <span className="absolute left-3 top-2.5 text-xs text-[#7d8872]">🔍</span>
+            </div>
+
+            <select
+              value={selectedDept}
+              onChange={(e) => setSelectedDept(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-white border border-[#ded8c2] text-xs text-[#0a3d2e] font-medium focus:outline-none focus:border-[#0a3d2e]"
+            >
+              {departments.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-white border border-[#ded8c2] text-xs text-[#0a3d2e] font-medium focus:outline-none focus:border-[#0a3d2e]"
+            >
+              {years.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Student Profile Cards Grid (Rich multi-student records as requested: "add more student data in 1st image") */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+            {visibleDirectoryStudents.map((stu) => (
+              <div
+                key={stu.id}
+                onClick={() => setSelectedStudent(stu)}
+                className="p-5 rounded-2xl bg-white border border-[#e2dec9] hover:border-[#0a3d2e]/40 transition-all shadow-sm hover:shadow-md cursor-pointer flex gap-4 items-center group"
+              >
+                <img
+                  src={stu.avatar_url}
+                  alt={stu.full_name}
+                  className="w-16 h-18 sm:w-20 sm:h-22 rounded-xl object-cover border border-[#eeebe0] flex-shrink-0"
+                />
+
+                <div className="flex-1 min-w-0 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#f0eee4] text-[#0a3d2e] font-semibold">
+                      {stu.university_id}
+                    </span>
+                    <span className="text-[10px] text-emerald-700 font-bold">
+                      GPA {stu.gpa}
+                    </span>
+                  </div>
+
+                  <h4 className="text-base font-bold font-serif text-[#0a3d2e] truncate group-hover:text-emerald-800">
+                    {stu.full_name}
+                  </h4>
+
+                  <p className="text-xs text-[#5f6b55] truncate">
+                    {stu.department}
+                  </p>
+
+                  <div className="text-[11px] font-mono text-[#7e8b74] truncate">
+                    {stu.academic_year} • {stu.semester}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </section>
+
+      </main>
+
+      {/* Student Detail Dossier Modal */}
+      {selectedStudent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5 text-[#0a3d2e]">
+            <button
+              onClick={() => setSelectedStudent(null)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#eeebe0] text-[#0a3d2e] flex items-center justify-center hover:bg-[#ded9c4]"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-4 border-b border-[#eeebe0] pb-4">
+              <img
+                src={selectedStudent.avatar_url}
+                alt={selectedStudent.full_name}
+                className="w-16 h-20 rounded-xl object-cover border-2 border-[#0a3d2e]/30"
+              />
+              <div>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#69745e]">
+                  Official Academic Record
+                </span>
+                <h3 className="text-xl font-bold font-serif text-[#0a3d2e]">
+                  {selectedStudent.full_name}
+                </h3>
+                <p className="text-xs text-[#505a49]">{selectedStudent.department}</p>
+                <div className="text-xs font-mono text-emerald-800 font-bold mt-1">
+                  Cumulative GPA: {selectedStudent.gpa} / 10.0
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2.5 text-xs font-mono text-[#505a49]">
+              <div className="flex justify-between border-b border-[#f0eee4] pb-1">
+                <span>University Roll ID:</span>
+                <span className="font-bold text-[#0a3d2e]">{selectedStudent.university_id}</span>
+              </div>
+              <div className="flex justify-between border-b border-[#f0eee4] pb-1">
+                <span>Standing:</span>
+                <span className="text-[#0a3d2e]">{selectedStudent.academic_year} — {selectedStudent.semester}</span>
+              </div>
+              <div className="flex justify-between border-b border-[#f0eee4] pb-1">
+                <span>Institutional Email:</span>
+                <a href={`mailto:${selectedStudent.email}`} className="text-emerald-700 hover:underline">
+                  {selectedStudent.email}
+                </a>
+              </div>
+              <div className="flex justify-between border-b border-[#f0eee4] pb-1">
+                <span>Contact Hotline:</span>
+                <a href={`tel:${selectedStudent.contact}`} className="text-emerald-700 hover:underline">
+                  {selectedStudent.contact}
+                </a>
+              </div>
+              <div className="flex justify-between border-b border-[#f0eee4] pb-1">
+                <span>Enrollment Status:</span>
+                <span className="text-emerald-700 font-bold">{selectedStudent.enrollment_status}</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-[#eff5ef] border border-[#cbe0ce] text-xs text-[#264e37]">
+              <div className="font-bold mb-1 text-[#1b5e3c]">Academic Focus & Capstone:</div>
+              <p>{selectedStudent.academic_interest}</p>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                onClick={() => setSelectedStudent(null)}
+                className="px-4 py-2 rounded-xl bg-[#0a3d2e] text-white text-xs font-semibold"
+              >
+                Close Record
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add New Student Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+          <div className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-4 text-xs text-[#0a3d2e]">
+            <button
+              onClick={() => setIsAddModalOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#eeebe0] text-[#0a3d2e] flex items-center justify-center"
+            >
+              ✕
+            </button>
+            <h3 className="text-lg font-bold font-serif text-[#0a3d2e]">
+              Enroll Student into Directory (PostgreSQL)
+            </h3>
+            <p className="text-[#69745e] text-[11px]">
+              Inserts a new student record into the relational <span className="font-mono text-[#0a3d2e]">students</span> table.
+            </p>
+
+            <form onSubmit={handleCreateStudent} className="space-y-3">
+              <div>
+                <label className="block font-semibold mb-1">Student Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Tanmayee R. Raut"
+                  value={newStudent.fullName}
+                  onChange={(e) => setNewStudent({ ...newStudent, fullName: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#fbfaf6] border border-[#ded8c2] rounded-xl text-[#0a3d2e]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold mb-1">Department</label>
+                  <select
+                    value={newStudent.department}
+                    onChange={(e) => setNewStudent({ ...newStudent, department: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#fbfaf6] border border-[#ded8c2] rounded-xl text-[#0a3d2e]"
+                  >
+                    {departments.filter(d => d !== "All").map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-semibold mb-1">Academic Year</label>
+                  <select
+                    value={newStudent.academicYear}
+                    onChange={(e) => setNewStudent({ ...newStudent, academicYear: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#fbfaf6] border border-[#ded8c2] rounded-xl text-[#0a3d2e]"
+                  >
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold mb-1">Institutional Email *</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="student.24@stvincentngp.edu.in"
+                    value={newStudent.email}
+                    onChange={(e) => setNewStudent({ ...newStudent, email: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#fbfaf6] border border-[#ded8c2] rounded-xl text-[#0a3d2e]"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold mb-1">Contact Number</label>
+                  <input
+                    type="tel"
+                    placeholder="9823000000"
+                    value={newStudent.contact}
+                    onChange={(e) => setNewStudent({ ...newStudent, contact: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#fbfaf6] border border-[#ded8c2] rounded-xl text-[#0a3d2e]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold mb-1">Academic Interest & Research</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Distributed Cloud Databases, Microservices"
+                  value={newStudent.academicInterest}
+                  onChange={(e) => setNewStudent({ ...newStudent, academicInterest: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#fbfaf6] border border-[#ded8c2] rounded-xl text-[#0a3d2e]"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-2.5 rounded-xl bg-[#0a3d2e] hover:bg-[#124d3b] text-white font-bold text-xs uppercase tracking-wider shadow-md mt-2"
+              >
+                Save Record to PostgreSQL
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Institutional Footer — Exactly Matches Image 4 */}
+      <footer className="border-t border-[#e2dec9] py-8 px-6 text-center text-xs text-[#7d8872] bg-[#fbfaf6]">
+        Copyright 2026 St. Vincent Pallotti College of Engineering & Technology
+      </footer>
+
+    </div>
+  );
+}
+
+
+// --- SOURCE: src\App.jsx ---
+// Central Application Controller for NEXUS STUDIO (Classy Dimensional Portal Edition)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function App() {
+  const [activeView, setActiveView] = useState("dashboard");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("nexus_portal_theme") || "dark";
+  });
+  const [isDbStudioOpen, setIsDbStudioOpen] = useState(false);
+  const [modalProject, setModalProject] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Sync theme
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    localStorage.setItem("nexus_portal_theme", nextTheme);
+  };
+
+  // Sync with browser URL hash for direct links & refresh support
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#/", "").replace("#", "");
+      if (["restaurant", "chronolux", "portfolio", "auth", "news", "student-hub"].includes(hash)) {
+        setActiveView(hash);
+      } else {
+        setActiveView("dashboard");
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  const navigateTo = (viewId) => {
+    setActiveView(viewId);
+    window.location.hash = viewId === "dashboard" ? "" : `/${viewId}`;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const showToast = (toastObj) => {
+    setToast(toastObj);
+    setTimeout(() => {
+      setToast(null);
+    }, 4500);
+  };
+
+  return (
+    <>
+      {/* Background Interactive Celestial Canvas */}
+      <PortalCanvas theme={theme} />
+
+      {/* Global Click Sparkle Particle Burst */}
+      <PortalClickSparkle />
+
+      <MainLayout
+        activeView={activeView}
+        onNavigate={navigateTo}
+        onOpenDbStudio={() => setIsDbStudioOpen(true)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        currentUser={currentUser}
+      >
+        {/* View Switcher with Dimensional Scene Animation */}
+        <div key={activeView} className="portal-scene-enter">
+          {activeView === "dashboard" && (
+            <DashboardView
+              onNavigate={navigateTo}
+              onOpenDetails={(proj) => setModalProject(proj)}
+              onOpenDbStudio={() => setIsDbStudioOpen(true)}
+              theme={theme}
+            />
+          )}
+
+          {activeView === "restaurant" && (
+            <DragonPearlView
+              onBackToDashboard={() => navigateTo("dashboard")}
+              onShowToast={showToast}
+            />
+          )}
+
+          {activeView === "chronolux" && (
+            <ChronoLuxView
+              onBackToDashboard={() => navigateTo("dashboard")}
+              onShowToast={showToast}
+            />
+          )}
+
+          {activeView === "portfolio" && (
+            <HarshadaPortfolioView
+              onBackToDashboard={() => navigateTo("dashboard")}
+              onShowToast={showToast}
+              onOpenProject={navigateTo}
+            />
+          )}
+
+          {activeView === "auth" && (
+            <SecureFlowView
+              onBackToDashboard={() => navigateTo("dashboard")}
+              onShowToast={showToast}
+              currentUser={currentUser}
+              onLogin={(u) => setCurrentUser(u)}
+              onLogout={() => setCurrentUser(null)}
+            />
+          )}
+
+          {activeView === "news" && (
+            <DailyBriefView
+              onBackToDashboard={() => navigateTo("dashboard")}
+              onShowToast={showToast}
+            />
+          )}
+
+          {activeView === "student-hub" && (
+            <StudentHubView
+              onBackToDashboard={() => navigateTo("dashboard")}
+              onShowToast={showToast}
+            />
+          )}
+        </div>
+
+        {/* Global Modals */}
+        <DatabaseStudioModal
+          isOpen={isDbStudioOpen}
+          onClose={() => setIsDbStudioOpen(false)}
+        />
+
+        <ProjectModal
+          project={modalProject}
+          isOpen={!!modalProject}
+          onClose={() => setModalProject(null)}
+          onLaunch={navigateTo}
+        />
+
+        <NotificationToast
+          toast={toast}
+          onDismiss={() => setToast(null)}
+        />
+      </MainLayout>
+    </>
+  );
+}
+
+
+
+
+
+// Mount Root to DOM
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(<App />);
+}
